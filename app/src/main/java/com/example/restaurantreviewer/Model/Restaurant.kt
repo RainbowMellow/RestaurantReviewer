@@ -9,4 +9,5 @@ data class Restaurant (
     val latitude: Double,
     val longitude: Double,
     val openingHours: String,
+    var avgRating: Double? = null,
         ): Serializable
