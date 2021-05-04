@@ -6,5 +6,40 @@
     <item android:id="@+id/menu_map"
         android:title="Show on map"
         app:showAsAction="always"/>
-
+    <item android:id="@+id/menu_filter"
+        android:title="Filter">
+        <menu>
+            <item android:id="@+id/filter_reset"
+                android:title="Reset filter"/>
+            <item android:id="@+id/filter_byname"
+                android:title="Filter alphabetically">
+                <menu>
+                    <item android:id="@+id/filter_byname_asc"
+                        android:title="A-Å"/>
+                    <item android:id="@+id/filter_byname_desc"
+                        android:title="Å-A"/>
+                </menu>
+            </item>
+            <item android:id="@+id/filter_byrating"
+                android:title="Filter by rating">
+                <menu>
+                    <item android:id="@+id/filter_byrating_asc"
+                        android:title="Lowest first"/>
+                    <item android:id="@+id/filter_byrating_desc"
+                        android:title="Highest first"/>
+                </menu>
+            </item>
+            <item android:id="@+id/filter_minRating"
+                android:title="Show only rated above...">
+                <menu>
+                    <item android:id="@+id/filter_minRating_2"
+                        android:title="2"/>
+                    <item android:id="@+id/filter_minRating_3"
+                        android:title="3"/>
+                    <item android:id="@+id/filter_minRating_4"
+                        android:title="4"/>
+                </menu>
+            </item>
+        </menu>
+    </item>
 </menu>

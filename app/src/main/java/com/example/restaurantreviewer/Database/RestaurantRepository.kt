@@ -16,8 +16,14 @@ class RestaurantRepository {
         Restaurant(id = 5, name = "Jensens Bøfhus", address = "Ved Bilka", latitude = 18.0, longitude = 2.7, openingHours = "Tuesday"))
     }
 
-    fun getAll(): ArrayList<Restaurant> {
-        return restaurantList
+    fun getAll(clone: Boolean = true): ArrayList<Restaurant> {
+        if (!clone) {
+            return restaurantList
+        } else {
+            var copyList: ArrayList<Restaurant> = ArrayList()
+            copyList.addAll(restaurantList)
+            return copyList
+        }
     }
 
 }

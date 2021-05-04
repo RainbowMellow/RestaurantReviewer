@@ -30,7 +30,7 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.RestaurantHolder> {
         val restaurant = restaurants[position]
         holder.tvName.text = restaurant.name
         holder.tvAddress.text = restaurant.address
-        holder.tvAvgRating.text = restaurant.avgRating.toString()
+        holder.tvAvgRating.text = if (restaurant.avgRating != null) restaurant.avgRating.toString() else "No ratings yet"
         holder.view.setOnClickListener { _ -> clickListener.onRestaurantClick(restaurant, position) }
     }
 
