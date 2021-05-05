@@ -1,10 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GUI.EditCreateActivity">
+    tools:context=".GUI.EditCreateActivity"
+    android:gravity="center_horizontal">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:id="@+id/llReviewInfo"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="start">
+
+        <TextView
+            android:id="@+id/tvRestaurantInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tvRestaurantInfo"
+            android:paddingTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:textStyle="bold"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/tvReviewerInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tvReviewerInfo"
+            android:paddingBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
+            android:textSize="15sp"/>
+        
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llSpinnerHolder"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_below="@id/llReviewInfo">
+
+        <TextView
+            android:id="@+id/tvSetRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tvSetRating"/>
+
+        <Spinner
+            android:id="@+id/spRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dropdown"/>
+
+    </LinearLayout>
+    
+    <EditText
+        android:id="@+id/etReview"
+        android:inputType="textMultiLine"
+        android:maxLength="100"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/llSpinnerHolder"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:textSize="15sp"
+        android:gravity="start"
+        android:hint="@string/etReviewHint"/>
+    
+    <TextView
+        android:id="@+id/tvWordCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etReview"
+        android:text="@string/tvWordCount"/>
+
+    <LinearLayout
+        android:id="@+id/llImgHolder"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/tvWordCount"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/imgReview"
+            android:onClick="onClickTakePicture"
+            android:contentDescription="@string/imgReviewCD"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="25dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/addimage"/>
+
+    </LinearLayout>
+
+    
+    <LinearLayout
+        android:id="@+id/llImgBtnHolder"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_below="@id/llImgHolder">
+
+        <Button
+            android:id="@+id/btnRemoveImg"
+            android:onClick="onClickRemovePicture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btnRemoveImg"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llBottomBtnHolder"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:id="@+id/btnBackToRestaurant"
+            android:onClick="onClickGoBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:text="@string/btnBackToRestaurant"
+            style="?android:attr/buttonBarButtonStyle" />
+
+        <Button
+            android:id="@+id/btnSaveReview"
+            android:onClick="onClickSaveReview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="@string/btnSaveReview"
+            style="?android:attr/buttonBarButtonStyle" />
+
+    </LinearLayout>
+
+</RelativeLayout>

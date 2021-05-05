@@ -20,4 +20,8 @@ class UserRepository {
     fun getAll(): ArrayList<User> {
         return userList
     }
+
+    fun getUserById(id: Int): User {
+        return userList.first { user -> user.id == id }
+    }
 }

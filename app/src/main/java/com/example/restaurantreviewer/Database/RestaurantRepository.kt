@@ -26,4 +26,8 @@ class RestaurantRepository {
         }
     }
 
+    fun getRestaurantById(id: Int): Restaurant {
+        return restaurantList.first { restaurant -> restaurant.id == id }
+    }
+
 }

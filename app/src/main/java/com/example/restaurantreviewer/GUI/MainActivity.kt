@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.restaurantreviewer.Database.RestaurantRepository
 import com.example.restaurantreviewer.Database.ReviewRepository
+import com.example.restaurantreviewer.Database.UserRepository
 import com.example.restaurantreviewer.Model.Restaurant
 import com.example.restaurantreviewer.R
 import kotlinx.android.synthetic.main.activity_main.*
@@ -138,7 +139,7 @@ class MainActivity : AppCompatActivity(), IItemClickListener {
         Toast.makeText(this, "Will eventually open map...", Toast.LENGTH_SHORT).show() // delete later
         /*val intent = Intent(this, MapsActivity::class.java) //needs specific class
 
-        intent.putExtra(ALL_RESTAURANTS_INTENT, restaurants.toTypedArray()) // is typed array necessary?
+        intent.putExtra(ALL_RESTAURANTS_INTENT, restaurants) // is typed array necessary?
         startActivity(intent)
 
          */

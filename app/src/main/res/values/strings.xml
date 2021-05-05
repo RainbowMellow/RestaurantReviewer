@@ -13,4 +13,13 @@
     <string name="filter_minRating_2">2</string>
     <string name="filter_minRating_3">3</string>
     <string name="filter_minRating_4">4</string>
+    <string name="tvRestaurantInfo">Restaurant:</string>
+    <string name="tvReviewerInfo">Reviewer:</string>
+    <string name="etReviewHint">Write review here... (optional)</string>
+    <string name="tvWordCount">Count: 0 / 100 words</string>
+    <string name="btnRemoveImg">Remove Picture</string>
+    <string name="btnBackToRestaurant">Back</string>
+    <string name="btnSaveReview">Save</string>
+    <string name="imgReviewCD">Review picture</string>
+    <string name="tvSetRating">Set rating:</string>
 </resources>
