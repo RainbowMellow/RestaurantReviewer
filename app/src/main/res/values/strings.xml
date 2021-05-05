@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">RestaurantReviewer</string>
+    <string name="menu_map">Show on map</string>
+    <string name="menu_filter">Filter</string>
+    <string name="filter_reset">Reset filter</string>
+    <string name="filter_byname">Filter alphabetically</string>
+    <string name="filter_byname_asc">A-Å</string>
+    <string name="filter_byname_desc">Å-A</string>
+    <string name="filter_byrating">Filter by rating</string>
+    <string name="filter_byrating_asc">Lowest first</string>
+    <string name="filter_byrating_desc">Highest first</string>
+    <string name="filter_minRating">Show only rated above...</string>
+    <string name="filter_minRating_2">2</string>
+    <string name="filter_minRating_3">3</string>
+    <string name="filter_minRating_4">4</string>
 </resources>

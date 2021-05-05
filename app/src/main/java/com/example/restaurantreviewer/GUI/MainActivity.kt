@@ -3,6 +3,7 @@ package com.example.restaurantreviewer.GUI
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -18,6 +19,7 @@ private lateinit var restRepo: RestaurantRepository
 private lateinit var revRepo: ReviewRepository
 private var restaurants: ArrayList<Restaurant> = ArrayList()
 private val TAG = "MainActivity"
+private val RESTAURANTS_DATA = "restaurants"
 private val ALL_RESTAURANTS_INTENT = 1 // place in values perhaps
 private val RESTAURANT_DETAILS_INTENT = 2 // place in values perhaps
 
@@ -30,8 +32,12 @@ class MainActivity : AppCompatActivity(), IItemClickListener {
         revRepo = ReviewRepository()
         revRepo.addMockData()
         restRepo.addMockData()
-        restaurants = restRepo.getAll()
-        restaurants.forEach { restaurant -> calculateAverageRating(restaurant) }
+        if (savedInstanceState != null) {
+            restaurants = savedInstanceState.getSerializable(RESTAURANTS_DATA) as ArrayList<Restaurant>
+        } else {
+            restaurants = restRepo.getAll()
+            restaurants.forEach { restaurant -> calculateAverageRating(restaurant) }
+        }
         rvMain.layoutManager = LinearLayoutManager(this)
         updateList()
     }
@@ -122,7 +128,7 @@ class MainActivity : AppCompatActivity(), IItemClickListener {
 
     override fun onRestaurantClick(restaurant: Restaurant, position: Int) {
         Toast.makeText(this, "Clicked on ${restaurant.name}", Toast.LENGTH_SHORT).show() // delete later
-        /*val intent = Intent(this, DetailActivity::class.java) // needs specific class
+        /*val intent = Intent(this, RestaurantActivity::class.java) // needs specific class
         intent.putExtra(RESTAURANT_DETAILS_INTENT, restaurant)
         startActivity(intent) // maybe for result - depends on if reviews are saved on detail view
         */
@@ -136,5 +142,10 @@ class MainActivity : AppCompatActivity(), IItemClickListener {
         startActivity(intent)
 
          */
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putSerializable(RESTAURANTS_DATA, restaurants)
     }
 }
