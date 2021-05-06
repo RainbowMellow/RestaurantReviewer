@@ -15,6 +15,7 @@ import com.example.restaurantreviewer.Model.Restaurant
 import com.example.restaurantreviewer.R
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
 
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -52,6 +53,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         getLocationPermission()
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(55.5129136,9.9206371), 6.5F))
 
         val restaurants = getRestaurants()
         for (restaurant in restaurants) {
