@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">RestaurantReviewer</string>
-<<<<<<< HEAD
     <string name="menu_map">Show on map</string>
     <string name="menu_filter">Filter</string>
     <string name="filter_reset">Reset filter</string>
@@ -23,7 +22,4 @@
     <string name="btnSaveReview">Save</string>
     <string name="imgReviewCD">Review picture</string>
     <string name="tvSetRating">Set rating:</string>
-=======
-    <string name="title_activity_maps">Map</string>
->>>>>>> parent of 1ec6ce5 (Revert "mapsactivity ready to receive and send intents to other views")
 </resources>
