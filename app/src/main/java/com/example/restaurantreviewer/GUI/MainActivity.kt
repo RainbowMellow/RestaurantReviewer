@@ -137,16 +137,17 @@ class MainActivity : AppCompatActivity(), IItemClickListener {
 
     fun openMap() {
         Toast.makeText(this, "Will eventually open map...", Toast.LENGTH_SHORT).show() // delete later
-        /*val intent = Intent(this, MapsActivity::class.java) //needs specific class
+        intent = Intent(this, MapsActivity::class.java) //needs specific class
 
-        intent.putExtra(ALL_RESTAURANTS_INTENT, restaurants) // is typed array necessary?
+        // intent.putExtra(ALL_RESTAURANTS_INTENT, restaurants) // is typed array necessary?
         startActivity(intent)
-
-         */
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putSerializable(RESTAURANTS_DATA, restaurants)
     }
+
+
+
 }
