@@ -136,7 +136,7 @@ class MainActivity : AppCompatActivity(), IItemClickListener {
     }
 
     fun openMap() {
-        Toast.makeText(this, "Will eventually open map...", Toast.LENGTH_SHORT).show() // delete later
+
         intent = Intent(this, MapsActivity::class.java) //needs specific class
 
         // intent.putExtra(ALL_RESTAURANTS_INTENT, restaurants) // is typed array necessary?
