@@ -7,8 +7,8 @@ data class Review (
     val id: Int,
     val userId: Int,
     val restaurantId: Int,
-    val review: String,
+    val review: String = "",
     val rating: Int,
-    val picture: String?,
-    val date: LocalDate?
+    val picture: String? = null,
+    val date: LocalDate? = null
         ): Serializable

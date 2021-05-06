@@ -8,7 +8,7 @@ import java.time.LocalDate
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ReviewRepository private constructor(){
+class ReviewRepository {
 
     private var reviewList = ArrayList<Review>()
 
