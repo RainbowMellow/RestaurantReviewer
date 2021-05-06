@@ -3,6 +3,7 @@ package com.example.restaurantreviewer.GUI
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+<<<<<<< HEAD
 import android.os.PersistableBundle
 import android.view.Menu
 import android.view.MenuItem
@@ -12,6 +13,11 @@ import com.example.restaurantreviewer.Database.RestaurantRepository
 import com.example.restaurantreviewer.Database.ReviewRepository
 import com.example.restaurantreviewer.Database.UserRepository
 import com.example.restaurantreviewer.Model.Restaurant
+=======
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toast
+>>>>>>> parent of 1ec6ce5 (Revert "mapsactivity ready to receive and send intents to other views")
 import com.example.restaurantreviewer.R
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.math.roundToInt
@@ -149,4 +155,20 @@ class MainActivity : AppCompatActivity(), IItemClickListener {
         super.onSaveInstanceState(outState)
         outState.putSerializable(RESTAURANTS_DATA, restaurants)
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_map -> {
+                val intentMap = Intent(this@MainActivity, MapsActivity::class.java)
+                startActivity(intentMap)
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
 }

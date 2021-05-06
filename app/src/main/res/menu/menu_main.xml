@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/menu_map"
+<<<<<<< HEAD
         android:title="@string/menu_map"
         app:showAsAction="always"/>
     <item android:id="@+id/menu_filter"
@@ -43,4 +44,8 @@
             </item>
         </menu>
     </item>
+=======
+        android:title="Show on map"
+        app:showAsAction="always"/>
+>>>>>>> parent of 1ec6ce5 (Revert "mapsactivity ready to receive and send intents to other views")
 </menu>
