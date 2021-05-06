@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">RestaurantReviewer</string>
+    <string name="review">Review</string>
+    <string name="restaurant_name">Restaurant Name</string>
+    <string name="restaurant_address">Restaurant Address</string>
+    <string name="opening_hours">Opening Hours:</string>
+    <string name="restaurant_opening_hours">Restaurant Opening Hours</string>
+    <string name="reviews">Reviews:</string>
 </resources>
