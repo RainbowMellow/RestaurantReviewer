@@ -4,11 +4,11 @@ import java.io.Serializable
 import java.time.LocalDate
 
 data class Review (
-    val id: Int,
-    val userId: Int,
-    val restaurantId: Int,
-    val review: String = "",
-    val rating: Int,
-    val picture: String? = null,
-    val date: LocalDate? = null
+    var id: Int,
+    var userId: Int,
+    var restaurantId: Int,
+    var review: String = "",
+    var rating: Int,
+    var picture: String? = null,
+    var date: LocalDate? = null
         ): Serializable
