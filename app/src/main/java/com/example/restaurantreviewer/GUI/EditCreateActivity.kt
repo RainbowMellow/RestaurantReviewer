@@ -1,14 +1,23 @@
 package com.example.restaurantreviewer.GUI
 
+import android.Manifest
+import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.icu.text.SimpleDateFormat
 import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.FileProvider
 import com.example.restaurantreviewer.Database.RestaurantRepository
 import com.example.restaurantreviewer.Database.UserRepository
 import com.example.restaurantreviewer.Model.Restaurant
@@ -17,19 +26,23 @@ import com.example.restaurantreviewer.Model.User
 import com.example.restaurantreviewer.R
 import kotlinx.android.synthetic.main.activity_editcreate.*
 import java.io.File
+import java.util.*
+import kotlin.NoSuchElementException
 
 class EditCreateActivity : AppCompatActivity() {
 
     private lateinit var review: Review
     private lateinit var restRepo: RestaurantRepository
     private lateinit var userRepo: UserRepository
-    private val pictureFile: File? = null
+    private var pictureFile: File? = null
     private val REVIEW_INTENT = "review"
     private val ERROR_INTENT = "error"
     private val RESULT_UPDATED = 1
     private val RESULT_CREATED = 2
-    private val RESULT_CANCELLED = 3
+    private val RESULT_NOSAVE = 3
     private val RESULT_FAILED = 4
+    private val PERMISSION_REQUEST_CODE = 5
+    private val CAMERA_REQUEST_CODE = 6
     private val TAG = "EditCreateActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -93,7 +106,7 @@ class EditCreateActivity : AppCompatActivity() {
     }
 
     fun onClickGoBack(view: View) {
-        setResult(RESULT_CANCELLED)
+        setResult(RESULT_NOSAVE)
         finish()
     }
 
@@ -112,16 +125,83 @@ class EditCreateActivity : AppCompatActivity() {
         )
     }
 
-    fun onClickTakePicture(view: View) {}
+    fun onClickTakePicture(view: View) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val permissions = mutableListOf<String>()
+            if (!hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            if (!hasPermission(Manifest.permission.CAMERA)) permissions.add(Manifest.permission.CAMERA)
+            if (permissions.size > 0) {
+                ActivityCompat.requestPermissions(this, permissions.toTypedArray(), PERMISSION_REQUEST_CODE)
+            } else {
+                takePicture()
+            }
+        } else {
+            takePicture()
+        }
+    }
 
-    fun onClickRemovePicture(view: View) {}
+    private fun hasPermission(permission: String): Boolean {
+        return ActivityCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun takePicture() {
+        pictureFile = getOutputFile("RRCamera")
+        if(pictureFile == null) {
+            Toast.makeText(this, "Could not create file", Toast.LENGTH_LONG).show()
+            return
+        }
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        val applicationId = "com.example.restaurantreviewer"
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(
+            this, "${applicationId}.provider", pictureFile!!))
+        try {
+            startActivityForResult(intent, CAMERA_REQUEST_CODE)
+        } catch (e: ActivityNotFoundException) {
+            Toast.makeText(this, "Camera activity not found!!!", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun getOutputFile(folder: String): File? {
+        val mediaStorageDir = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), folder)
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                Log.d(TAG, "Failed to create picture directory")
+                return null
+            }
+        }
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val postfix = "jpg"
+        val prefix = "IMG"
+        return File(mediaStorageDir.path + File.separator + prefix + "_" + timeStamp + "." + postfix)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == CAMERA_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                val pictureString = Uri.fromFile(pictureFile!!).toString()
+                review.picture = pictureString
+                setImageFromFileString(imgReview, pictureString)
+            }
+            if (resultCode == RESULT_CANCELED) {
+                Toast.makeText(this, "Cancelled taking picture", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    fun onClickRemovePicture(view: View) {
+        review.picture = null
+        setImageFromFileString(imgReview, null)
+    }
 
     private fun setImageFromFileString(img: ImageView, fileString: String?) {
         if (fileString != null) {
             var uri = Uri.parse(fileString)
             img.setImageURI(uri)
-            img.adjustViewBounds = true
-            img.scaleType = ImageView.ScaleType.CENTER_INSIDE
+        } else {
+            img.setImageResource(R.drawable.addimage)
         }
+        img.adjustViewBounds = true
+        img.scaleType = ImageView.ScaleType.CENTER_INSIDE
     }
 }
