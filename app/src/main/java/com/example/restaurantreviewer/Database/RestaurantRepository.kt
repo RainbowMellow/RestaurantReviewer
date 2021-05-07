@@ -1,9 +1,10 @@
 package com.example.restaurantreviewer.Database
 
+import android.content.Context
 import com.example.restaurantreviewer.Model.Restaurant
 import com.example.restaurantreviewer.Model.User
 
-class RestaurantRepository {
+class RestaurantRepository private constructor(context: Context){
 
     private var restaurantList = ArrayList<Restaurant>()
 
@@ -28,6 +29,20 @@ class RestaurantRepository {
 
     fun getRestaurantById(id: Int): Restaurant {
         return restaurantList.first { restaurant -> restaurant.id == id }
+    }
+
+    companion object {
+        private var Instance: RestaurantRepository? = null
+
+        fun initialize(context: Context) {
+            if (Instance == null)
+                Instance = RestaurantRepository(context)
+        }
+
+        fun get(): RestaurantRepository {
+            if (Instance != null) return Instance!!
+            throw IllegalStateException("Restaurant repo not initialized")
+        }
     }
 
 }
