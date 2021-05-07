@@ -147,6 +147,8 @@ class EditCreateActivity : AppCompatActivity() {
             tvWordCount.setTextColor(Color.RED)
         } else if (text.length >= 140) {
             tvWordCount.setTextColor(getColor(R.color.dark_orange))
+        } else {
+            tvWordCount.setTextColor(Color.BLACK)
         }
     }
 
