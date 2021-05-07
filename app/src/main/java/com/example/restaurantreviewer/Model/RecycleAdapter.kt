@@ -1,8 +1,6 @@
 package com.example.restaurantreviewer.Model
 
 import android.content.Context
-import android.graphics.BitmapFactory
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,10 +8,8 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.restaurantreviewer.Database.ReviewRepository
 import com.example.restaurantreviewer.Database.UserRepository
 import com.example.restaurantreviewer.R
-import kotlinx.android.synthetic.main.activity_restaurant.*
 import java.time.format.DateTimeFormatter
 
 class RecycleAdapter(private val reviews: ArrayList<Review>) : RecyclerView.Adapter<RecycleAdapter.ReviewViewHolder>() {
@@ -43,7 +39,7 @@ class RecycleAdapter(private val reviews: ArrayList<Review>) : RecyclerView.Adap
 
         val element = reviewList[position]
 
-        val user = userRepository.getOne(element.userId)
+        val user = userRepository.getUserById(element.userId)
 
         holder.nameTxt.text = user.name
 

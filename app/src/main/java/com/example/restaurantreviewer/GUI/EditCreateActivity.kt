@@ -40,14 +40,6 @@ class EditCreateActivity : AppCompatActivity() {
     private lateinit var restRepo: RestaurantRepository
     private lateinit var userRepo: UserRepository
     private var pictureFile: File? = null
-    private val REVIEW_INTENT = "review"
-    private val ERROR_INTENT = "error"
-    private val RESULT_UPDATED = 1
-    private val RESULT_CREATED = 2
-    private val RESULT_NOSAVE = 3
-    private val RESULT_FAILED = 4
-    private val PERMISSION_REQUEST_CODE = 5
-    private val CAMERA_REQUEST_CODE = 6
     private val TAG = "EditCreateActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,12 +49,10 @@ class EditCreateActivity : AppCompatActivity() {
         setupEditReviewText()
         if (intent.extras != null) {
             // remember to take room into account later
-            restRepo = RestaurantRepository()
-            userRepo = UserRepository()
-            restRepo.addMockData() // delete later
-            userRepo.addMockData() // delete later
+            restRepo = RestaurantRepository.get()
+            userRepo = UserRepository.get()
             val extras: Bundle = intent.extras!!
-            review = extras.getSerializable(REVIEW_INTENT) as Review
+            review = extras.getSerializable(getString(R.string.REVIEW_INTENT)) as Review
             try {
                 val restaurant: Restaurant = restRepo.getRestaurantById(review.restaurantId)
                 val user: User = userRepo.getUserById(review.userId)
@@ -104,26 +94,26 @@ class EditCreateActivity : AppCompatActivity() {
         val intent = Intent()
         if (review.id == 0) {
             review.date = LocalDate.now()
-            intent.putExtra(REVIEW_INTENT, review)
-            setResult(RESULT_CREATED, intent)
+            intent.putExtra(getString(R.string.REVIEW_INTENT), review)
+            setResult(getString(R.string.RESULT_CREATED).toInt(), intent)
         } else {
-            intent.putExtra(REVIEW_INTENT, review)
-            setResult(RESULT_UPDATED, intent)
+            intent.putExtra(getString(R.string.REVIEW_INTENT), review)
+            setResult(getString(R.string.RESULT_UPDATED).toInt(), intent)
         }
         Log.d(TAG, "Saving review:\nId: ${review.id}\nRating: ${review.rating}\nReview: ${review.review}\nUri: ${review.picture}")
         finish()
     }
 
     fun onClickGoBack(view: View) {
-        setResult(RESULT_NOSAVE)
+        setResult(getString(R.string.RESULT_NOSAVE).toInt())
         finish()
     }
 
     private fun failure(errorMsg: String) {
         Log.d(TAG, errorMsg)
         val intent = Intent()
-        intent.putExtra(ERROR_INTENT, errorMsg)
-        setResult(RESULT_FAILED)
+        intent.putExtra(getString(R.string.ERROR_INTENT), errorMsg)
+        setResult(getString(R.string.RESULT_FAILED).toInt())
         finish()
     }
 
@@ -158,7 +148,7 @@ class EditCreateActivity : AppCompatActivity() {
             if (!hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             if (!hasPermission(Manifest.permission.CAMERA)) permissions.add(Manifest.permission.CAMERA)
             if (permissions.size > 0) {
-                ActivityCompat.requestPermissions(this, permissions.toTypedArray(), PERMISSION_REQUEST_CODE)
+                ActivityCompat.requestPermissions(this, permissions.toTypedArray(), getString(R.string.PERMISSION_REQUEST_CODE).toInt())
             } else {
                 takePicture()
             }
@@ -182,7 +172,7 @@ class EditCreateActivity : AppCompatActivity() {
         intent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(
             this, "${applicationId}.provider", pictureFile!!))
         try {
-            startActivityForResult(intent, CAMERA_REQUEST_CODE)
+            startActivityForResult(intent, getString(R.string.CAMERA_REQUEST_CODE).toInt())
         } catch (e: ActivityNotFoundException) {
             Toast.makeText(this, "Camera activity not found!!!", Toast.LENGTH_LONG).show()
         }
@@ -204,7 +194,7 @@ class EditCreateActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == CAMERA_REQUEST_CODE) {
+        if (requestCode == getString(R.string.CAMERA_REQUEST_CODE).toInt()) {
             if (resultCode == RESULT_OK) {
                 val pictureString = Uri.fromFile(pictureFile!!).toString()
                 review.picture = pictureString

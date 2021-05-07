@@ -22,7 +22,7 @@ class UserRepository private constructor(context: Context) {
         return userList
     }
 
-    fun getOne(id: Int): User {
+    fun getUserById(id: Int): User {
         return userList.first { u -> u.id == id }
     }
 

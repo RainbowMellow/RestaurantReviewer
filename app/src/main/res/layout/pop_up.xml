@@ -82,6 +82,14 @@
             android:src="@drawable/chef"
             android:foreground="@drawable/box_border"/>
 
+        <ImageButton
+            android:id="@+id/ibAdd"
+            android:onClick="onClickEditReview"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/small_full_star"
+            android:layout_gravity="bottom|end"/>
+
     </LinearLayout>
 
 </RelativeLayout>

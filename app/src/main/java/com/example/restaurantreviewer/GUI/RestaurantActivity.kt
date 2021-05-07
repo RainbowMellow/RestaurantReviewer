@@ -1,11 +1,13 @@
 package com.example.restaurantreviewer.GUI
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -16,9 +18,9 @@ import com.example.restaurantreviewer.Database.UserRepository
 import com.example.restaurantreviewer.Model.RecycleAdapter
 import com.example.restaurantreviewer.Model.Restaurant
 import com.example.restaurantreviewer.Model.Review
+import com.example.restaurantreviewer.Model.User
 import com.example.restaurantreviewer.R
 import kotlinx.android.synthetic.main.activity_restaurant.*
-import kotlinx.android.synthetic.main.pop_up.*
 import java.time.format.DateTimeFormatter
 
 
@@ -30,23 +32,20 @@ class RestaurantActivity: AppCompatActivity() {
 
     lateinit var userRepository: UserRepository
 
+    var popupReview: Review? = null
+
     var chosenRestaurant = Restaurant(0, "", "", 0.0, 0.0, "")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_restaurant)
 
-        ReviewRepository.initialize(this)
         reviewRepo = ReviewRepository.get()
-        reviewRepo.addMockData()
-
-        UserRepository.initialize(this)
         userRepository = UserRepository.get()
-        userRepository.addMockData()
 
         if (intent.extras != null) {
             val extras: Bundle = intent.extras!!
-            val restaurant = extras.getSerializable("restaurant") as Restaurant
+            val restaurant = extras.getSerializable(getString(R.string.RESTAURANT_DETAILS_INTENT)) as Restaurant
 
             chosenRestaurant = restaurant
 
@@ -89,7 +88,9 @@ class RestaurantActivity: AppCompatActivity() {
 
         restaurantAdapter.itemClickListener = { position, review ->
 
-            val user = userRepository.getOne(review.userId)
+            popupReview = review
+
+            val user = userRepository.getUserById(review.userId)
 
             val inflater = layoutInflater
             val dialoglayout: View = inflater.inflate(R.layout.pop_up, null)
@@ -177,9 +178,50 @@ class RestaurantActivity: AppCompatActivity() {
         }
     }
 
-
-
     fun onClickBack(view: View) { finish() }
     fun onClickLocation(view: View) {}
+
+    fun onClickAddReview(view: View) {
+        val intent = Intent(this, EditCreateActivity::class.java)
+        val user: User = userRepository.getUserById(1)
+        val review = Review(id = 0, userId = user.id, restaurantId = chosenRestaurant.id, rating = 0)
+        intent.putExtra(getString(R.string.REVIEW_INTENT), review)
+        startActivityForResult(intent, getString(R.string.SAVE_REVIEW_REQUEST_CODE).toInt())
+    }
+
+    fun onClickEditReview(view: View) {
+        val intent = Intent(this, EditCreateActivity::class.java)
+        intent.putExtra(getString(R.string.REVIEW_INTENT), popupReview!!)
+        startActivityForResult(intent, getString(R.string.SAVE_REVIEW_REQUEST_CODE).toInt())
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == getString(R.string.SAVE_REVIEW_REQUEST_CODE).toInt()) {
+            when (resultCode) {
+                getString(R.string.RESULT_NOSAVE).toInt() -> {
+                    // nothing changed
+                }
+                getString(R.string.RESULT_CREATED).toInt() -> {
+                    // save review
+                    var review = data?.extras?.getSerializable(getString(R.string.REVIEW_INTENT)) as Review
+                    println("New review saved: Id ${review.id} Rating ${review.rating}")
+                }
+                getString(R.string.RESULT_UPDATED).toInt() -> {
+                    // update review
+                    var review = data?.extras?.getSerializable(getString(R.string.REVIEW_INTENT)) as Review
+                    println("Updated review saved: Id ${review.id} Rating ${review.rating}")
+                }
+                getString(R.string.RESULT_FAILED).toInt() -> {
+                    // catastrophic failure
+                }
+                else -> {
+                    // something else
+                }
+            }
+        }
+    }
+
+
 
 }
