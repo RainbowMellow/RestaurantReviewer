@@ -24,7 +24,8 @@
             android:paddingTop="10dp"
             android:layout_marginBottom="10dp"
             android:textStyle="bold"
-            android:textSize="15sp"/>
+            android:textSize="15sp"
+            android:layout_gravity="center"/>
 
         <TextView
             android:id="@+id/tvReviewerInfo"
@@ -32,9 +33,10 @@
             android:layout_height="wrap_content"
             android:text="@string/tvReviewerInfo"
             android:paddingBottom="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:textStyle="bold"
-            android:textSize="15sp"/>
+            android:textSize="15sp"
+            android:layout_gravity="center"/>
         
     </LinearLayout>
 
@@ -63,12 +65,12 @@
     <EditText
         android:id="@+id/etReview"
         android:inputType="textMultiLine"
-        android:maxLength="100"
+        android:maxLength="150"
         android:layout_width="300dp"
         android:layout_height="100dp"
         android:layout_below="@id/llSpinnerHolder"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:textSize="15sp"
         android:gravity="start"
         android:hint="@string/etReviewHint"/>
@@ -82,7 +84,7 @@
 
     <LinearLayout
         android:id="@+id/llImgHolder"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_below="@id/tvWordCount"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
@@ -94,7 +96,9 @@
             android:contentDescription="@string/imgReviewCD"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="25dp"
+            android:paddingEnd="75dp"
+            android:paddingStart="75dp"
+            android:paddingBottom="75dp"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
             android:src="@drawable/addimage"/>
@@ -125,7 +129,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_horizontal"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_alignParentBottom="true">
 
         <Button
@@ -134,8 +138,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
-            android:text="@string/btnBackToRestaurant"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:text="@string/btnBackToRestaurant"/>
 
         <Button
             android:id="@+id/btnSaveReview"
@@ -143,8 +146,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:text="@string/btnSaveReview"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:text="@string/btnSaveReview"/>
 
     </LinearLayout>
 

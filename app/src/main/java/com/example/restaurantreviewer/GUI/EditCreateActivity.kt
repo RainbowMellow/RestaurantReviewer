@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.icu.text.SimpleDateFormat
 import android.net.Uri
 import android.os.Build
@@ -11,13 +12,16 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.text.InputType
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
+import androidx.core.widget.doAfterTextChanged
 import com.example.restaurantreviewer.Database.RestaurantRepository
 import com.example.restaurantreviewer.Database.UserRepository
 import com.example.restaurantreviewer.Model.Restaurant
@@ -26,6 +30,7 @@ import com.example.restaurantreviewer.Model.User
 import com.example.restaurantreviewer.R
 import kotlinx.android.synthetic.main.activity_editcreate.*
 import java.io.File
+import java.time.LocalDate
 import java.util.*
 import kotlin.NoSuchElementException
 
@@ -49,10 +54,13 @@ class EditCreateActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_editcreate)
         setupRatingsSpinner()
+        setupEditReviewText()
         if (intent.extras != null) {
             // remember to take room into account later
             restRepo = RestaurantRepository()
             userRepo = UserRepository()
+            restRepo.addMockData() // delete later
+            userRepo.addMockData() // delete later
             val extras: Bundle = intent.extras!!
             review = extras.getSerializable(REVIEW_INTENT) as Review
             try {
@@ -62,7 +70,6 @@ class EditCreateActivity : AppCompatActivity() {
                 tvReviewerInfo.text = getString(R.string.reviewerInfo, user.name)
             } catch (e: NoSuchElementException) {
                 val errorMsg = "Restaurant or user not found"
-                Log.d(TAG, errorMsg)
                 failure(errorMsg)
             }
             // if new review (id has not been assigned yet)
@@ -78,10 +85,10 @@ class EditCreateActivity : AppCompatActivity() {
                 } else {
                     etReview.setText(review.review)
                 }
+                countCharacters(etReview.text.toString())
             }
         } else {
             val errorMsg = "Intent is empty"
-            Log.d(TAG, errorMsg)
             failure(errorMsg)
         }
     }
@@ -92,16 +99,18 @@ class EditCreateActivity : AppCompatActivity() {
             Toast.makeText(this, "You must select a rating", Toast.LENGTH_LONG).show()
             return
         } else {
-            review.rating = spRating.selectedItem as Int
+            review.rating = spRating.selectedItem.toString().toInt()
         }
         val intent = Intent()
-        intent.putExtra(REVIEW_INTENT, review)
         if (review.id == 0) {
+            review.date = LocalDate.now()
+            intent.putExtra(REVIEW_INTENT, review)
             setResult(RESULT_CREATED, intent)
         } else {
+            intent.putExtra(REVIEW_INTENT, review)
             setResult(RESULT_UPDATED, intent)
         }
-        Log.d(TAG, "Saving review: Id: ${review.id}, Rating: ${review.rating}, Review: ${review.review}, Uri: ${review.picture}")
+        Log.d(TAG, "Saving review:\nId: ${review.id}\nRating: ${review.rating}\nReview: ${review.review}\nUri: ${review.picture}")
         finish()
     }
 
@@ -111,6 +120,7 @@ class EditCreateActivity : AppCompatActivity() {
     }
 
     private fun failure(errorMsg: String) {
+        Log.d(TAG, errorMsg)
         val intent = Intent()
         intent.putExtra(ERROR_INTENT, errorMsg)
         setResult(RESULT_FAILED)
@@ -123,6 +133,21 @@ class EditCreateActivity : AppCompatActivity() {
             R.array.ratings,
             android.R.layout.simple_spinner_dropdown_item
         )
+    }
+
+    private fun setupEditReviewText() {
+        etReview.imeOptions = EditorInfo.IME_ACTION_DONE
+        etReview.setRawInputType(InputType.TYPE_CLASS_TEXT)
+        etReview.doAfterTextChanged { text -> countCharacters(text.toString()) }
+    }
+
+    private fun countCharacters(text: String) {
+        tvWordCount.text = getString(R.string.tvWordCount, text.length)
+        if (text.length == 150) {
+            tvWordCount.setTextColor(Color.RED)
+        } else if (text.length >= 140) {
+            tvWordCount.setTextColor(getColor(R.color.dark_orange))
+        }
     }
 
     fun onClickTakePicture(view: View) {

@@ -12,6 +12,7 @@ import com.example.restaurantreviewer.Database.RestaurantRepository
 import com.example.restaurantreviewer.Database.ReviewRepository
 import com.example.restaurantreviewer.Database.UserRepository
 import com.example.restaurantreviewer.Model.Restaurant
+import com.example.restaurantreviewer.Model.Review
 import com.example.restaurantreviewer.R
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.math.roundToInt

@@ -16,7 +16,7 @@
     <string name="tvRestaurantInfo">Restaurant:</string>
     <string name="tvReviewerInfo">Reviewer:</string>
     <string name="etReviewHint">Write detailed review here... (optional)</string>
-    <string name="tvWordCount">Count: 0 / 100 words</string>
+    <string name="tvWordCount">Count: %d / 150 characters</string>
     <string name="btnRemoveImg">Remove Picture</string>
     <string name="btnBackToRestaurant">Back</string>
     <string name="btnSaveReview">Save</string>
