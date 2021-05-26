@@ -7,6 +7,7 @@ import android.os.PersistableBundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.restaurantreviewer.Database.RestaurantRepository
 import com.example.restaurantreviewer.Database.ReviewRepository
@@ -46,6 +47,15 @@ class MainActivity : AppCompatActivity(), IItemClickListener {
             restaurants.forEach { restaurant -> calculateAverageRating(restaurant) }
         }
         rvMain.layoutManager = LinearLayoutManager(this)
+
+        // Adding the lines in between the rows
+        rvMain.addItemDecoration(
+            DividerItemDecoration(
+                this,
+                DividerItemDecoration.VERTICAL
+            )
+        )
+
         updateList()
     }
 
@@ -63,7 +73,7 @@ class MainActivity : AppCompatActivity(), IItemClickListener {
             }
         }
         if (reviews > 0) {
-            restaurant.avgRating = totalScore / reviews
+            restaurant.avgRating = Math.round((totalScore / reviews)).toInt()
         }
     }
 
