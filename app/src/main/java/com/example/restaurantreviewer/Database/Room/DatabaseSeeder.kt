@@ -8,6 +8,7 @@ import java.time.LocalDate
 class DatabaseSeeder {
 
     fun seed() {
+        println("---starting to seed")
         val repo = RestaurantRepository.get()
         val restaurantList = arrayListOf<Restaurant>(
             Restaurant(id = 1, name = "Sunset", address = "Torvet", latitude = 1.0, longitude = 2.0, openingHours = "Monday"),
@@ -22,7 +23,7 @@ class DatabaseSeeder {
             User(id = 3, name = "Anders"),
             User(id = 4, name = "Per"),
         )
-        val reviewList = arrayListOf(
+        val reviewList = arrayListOf<Review>(
             Review(id = 1, userId = 1, restaurantId = 1, review = "Good service", rating = 5, picture = null, date = LocalDate.now()),
             Review(id = 2, userId = 2, restaurantId = 2, review = "Very bad service. The food was very bad, and I am very disappointed!", rating = 1, picture = "", date = LocalDate.now()),
             Review(id = 3, userId = 3, restaurantId = 3, review = "Okay", rating = 3, picture = null, date = LocalDate.now()),
@@ -34,6 +35,7 @@ class DatabaseSeeder {
         restaurantList.forEach { restaurant -> repo.insertRestaurant(restaurant) }
         userList.forEach { user -> repo.insertUser(user) }
         reviewList.forEach { review -> repo.insertReview(review) }
+        println("---finished seeding!")
     }
 
     fun clean() {
