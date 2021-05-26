@@ -6,6 +6,6 @@ import java.io.Serializable
 
 @Entity
 data class User (
-    @PrimaryKey(autoGenerate = true) val id: Int,
-    val name: String,
+    @PrimaryKey(autoGenerate = true) var id: Int,
+    var name: String,
         ): Serializable

@@ -1,6 +1,7 @@
 package com.example.restaurantreviewer.Model
 
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import java.io.Serializable
 import java.time.LocalDate
@@ -13,5 +14,9 @@ data class Review (
     var review: String = "",
     var rating: Int,
     var picture: String? = null,
-    var date: LocalDate? = null
-        ): Serializable
+    var date: LocalDate? = null,
+    @Ignore var user: User? = null,
+    @Ignore var restaurant: Restaurant? = null
+    ): Serializable {
+        constructor(): this(0, 0, 0, "", 0, null, null, null, null)
+    }

@@ -3,18 +3,17 @@ package com.example.restaurantreviewer.Database.Room
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.restaurantreviewer.Model.Review
-import com.example.restaurantreviewer.Model.ReviewWithRestaurantAndUser
 
 @Dao
 interface ReviewDao {
 
     @Transaction
     @Query("SELECT * FROM Review WHERE id=(:id)")
-    fun getReviewById(id: Int): LiveData<ReviewWithRestaurantAndUser>
+    fun getReviewById(id: Int): LiveData<Review>
 
     @Transaction
     @Query("SELECT * FROM Review WHERE restaurantId=(:id)")
-    fun getAllRestaurantReviews(id: Int): LiveData<List<ReviewWithRestaurantAndUser>>
+    fun getAllRestaurantReviews(id: Int): LiveData<List<Review>>
 
     @Insert
     fun insertReview(review: Review)
