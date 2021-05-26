@@ -3,19 +3,17 @@ package com.example.restaurantreviewer.GUI
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.restaurantreviewer.Database.ReviewRepository
-import com.example.restaurantreviewer.Database.UserRepository
+import com.example.restaurantreviewer.Database.InMemory.ReviewRepository
+import com.example.restaurantreviewer.Database.InMemory.UserRepository
 import com.example.restaurantreviewer.Model.RecycleAdapter
 import com.example.restaurantreviewer.Model.Restaurant
 import com.example.restaurantreviewer.Model.Review
@@ -23,7 +21,6 @@ import com.example.restaurantreviewer.Model.User
 import com.example.restaurantreviewer.R
 import kotlinx.android.synthetic.main.activity_restaurant.*
 import java.time.format.DateTimeFormatter
-import kotlin.math.log
 
 
 class RestaurantActivity: AppCompatActivity() {

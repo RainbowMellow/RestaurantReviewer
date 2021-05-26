@@ -3,19 +3,15 @@ package com.example.restaurantreviewer.GUI
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.restaurantreviewer.Database.RestaurantRepository
-import com.example.restaurantreviewer.Database.ReviewRepository
-import com.example.restaurantreviewer.Database.UserRepository
+import com.example.restaurantreviewer.Database.InMemory.RestaurantRepository
+import com.example.restaurantreviewer.Database.InMemory.ReviewRepository
+import com.example.restaurantreviewer.Database.InMemory.UserRepository
 import com.example.restaurantreviewer.Model.Restaurant
-import com.example.restaurantreviewer.Model.Review
 import com.example.restaurantreviewer.R
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlin.math.roundToInt
 
 private lateinit var restRepo: RestaurantRepository
 private lateinit var revRepo: ReviewRepository
