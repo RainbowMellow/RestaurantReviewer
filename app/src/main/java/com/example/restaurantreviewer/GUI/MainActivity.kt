@@ -20,7 +20,7 @@ import kotlin.math.roundToInt
 private lateinit var restRepo: RestaurantRepository
 private lateinit var revRepo: ReviewRepository
 private lateinit var userRepo: UserRepository
-private var restaurants: ArrayList<Restaurant> = ArrayList()
+var restaurants: ArrayList<Restaurant> = ArrayList()
 private val TAG = "MainActivity"
 private val RESTAURANTS_DATA = "restaurants" // turnsafety
 
@@ -134,14 +134,16 @@ class MainActivity : AppCompatActivity(), IItemClickListener {
     }
 
     override fun onRestaurantClick(restaurant: Restaurant, position: Int) {
-        val intent = Intent(this, RestaurantActivity::class.java) // needs specific class
+        val intent = Intent(this, RestaurantActivity::class.java)
         intent.putExtra(getString(R.string.RESTAURANT_DETAILS_INTENT), restaurant)
-        startActivity(intent) // maybe for result - depends on if reviews are saved on detail view
+        intent.putExtra("FROM_ACTIVITY", "MAIN");
+        startActivity(intent)
     }
 
     fun openMap() {
         intent = Intent(this, MapsActivity::class.java) //needs specific class
         intent.putExtra(getString(R.string.ALL_RESTAURANTS_INTENT), restaurants) // is typed array necessary?
+        intent.putExtra("FROM_ACTIVITY", "MAIN");
         startActivity(intent)
     }
 

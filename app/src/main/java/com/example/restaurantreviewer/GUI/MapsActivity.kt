@@ -1,6 +1,7 @@
 package com.example.restaurantreviewer.GUI
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.location.Location
@@ -8,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.restaurantreviewer.Model.Restaurant
@@ -24,10 +24,6 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_maps.*
-import kotlin.math.asin
-import kotlin.math.cos
-import kotlin.math.sin
-import kotlin.math.sqrt
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -47,17 +43,39 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         getLocationPermission()
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(55.5129136,9.9206371), 6.5F))
 
+        // Zoom over Denmark by default
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(55.5129136, 9.9206371), 6.5F))
+
+        // Receive restaurants from other activities
         val restaurants = getRestaurants()
+
+        // Zoom onto restaurant if there is only one
+        if (restaurants.size == 1) {
+            val restaurant = restaurants[0];
+            mMap.moveCamera(
+                CameraUpdateFactory.newLatLngZoom(
+                    LatLng(
+                        restaurant.latitude,
+                        restaurant.longitude
+                    ), 7.5F
+                )
+            )
+        }
         for (restaurant in restaurants) {
-            val marker = mMap.addMarker(MarkerOptions().position(LatLng(restaurant.latitude, restaurant.longitude)).title(restaurant.name))
+            val marker = mMap.addMarker(
+                MarkerOptions()
+                    .position(
+                        LatLng
+                            (restaurant.latitude, restaurant.longitude)
+                    )
+                    .title(restaurant.name)
+            )
             markerMap[marker] = restaurant
         }
 
@@ -71,19 +89,17 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    /**
+     * Gets filtered list of restaurants from MainActivity
+     */
     private fun getRestaurants(): ArrayList<Restaurant> {
-        // This should come from intent
-        val restaurants = ArrayList<Restaurant>()
-        restaurants.add(
-            Restaurant(1, "McDonalds", "Kongensgade 40", 55.466022876684434, 8.451934554143868, "10-00"),
-        )
-        restaurants.add(
-                Restaurant(2, "McDonalds", "Kongensgade 41", 56.466022876684434, 8.451934554143868, "10-00"),
-        )
-
-        return restaurants
+        val extras: Bundle = intent.extras!!
+        return extras.getSerializable(getString(R.string.ALL_RESTAURANTS_INTENT)) as ArrayList<Restaurant>;
     }
 
+    /**
+     * Get the clicked restaurant (marker on map)
+     */
     private fun getClickedRestaurant(id: Int): Restaurant {
         val restaurants = getRestaurants()
         val foundRestaurant = restaurants.single { r -> r.id == id }
@@ -94,13 +110,29 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    /**
+     * Send clicked restaurant to detail view
+     */
     fun onClickOpenLocation(view: View) {
-        // This should send intent to detail view
+        val intent = Intent(this, RestaurantActivity::class.java)
+        intent.putExtra(getString(R.string.RESTAURANT_DETAILS_INTENT), selectedRestaurant)
+        intent.putExtra("FROM_ACTIVITY", "MAPS");
+        startActivity(intent)
         Log.e("xyz", selectedRestaurant.toString())
     }
 
+    /**
+     * Go back to the previous activity
+     */
+    fun onClickBackFromMaps(view: View) {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+    }
+
+    /**
+     * Gets current device location
+     */
     fun onClickGetLocation(view: View) {
-        // Demo how to get current device location
         if (ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -112,7 +144,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             return
         }
         fusedLocationClient.lastLocation
-            .addOnSuccessListener { location : Location? ->
+            .addOnSuccessListener { location: Location? ->
                 if (location != null) {
                     lastKnownLocation = location
                     Log.e("xyz", "lat: ${location.latitude}, lng: ${location.longitude}")
@@ -120,25 +152,43 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             }
     }
 
-
     /**
      * Check permission of device location
      */
     private fun getLocationPermission() {
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
             mMap.isMyLocationEnabled = true
         } else {
-            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST)
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                LOCATION_PERMISSION_REQUEST
+            )
         }
     }
 
     /**
      * Ask for permission of device location and enables location
      */
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         if (requestCode === LOCATION_PERMISSION_REQUEST) {
             if (grantResults.contains(PackageManager.PERMISSION_GRANTED)) {
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
                     return
                 }
                 mMap.isMyLocationEnabled = true
