@@ -1,9 +1,11 @@
 package com.example.restaurantreviewer.Model
 
+import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.io.Serializable
 import java.time.LocalDate
 
+@Entity
 data class Review (
     @PrimaryKey (autoGenerate = true) var id: Int,
     var userId: Int,
