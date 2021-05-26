@@ -1,6 +1,7 @@
 package com.example.restaurantreviewer.GUI
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,6 +42,13 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.RestaurantHolder> {
         //holder.tvAvgRating.text = if (restaurant.avgRating != null) restaurant.avgRating.toString() else "No ratings yet"
 
         addStars(holder.llstars, context, restaurant)
+
+        val colours = intArrayOf(
+            Color.parseColor("#DFDFDF"),
+            Color.parseColor("#CCCCCC")
+        )
+
+        holder.view.setBackgroundColor(colours[position % colours.size])
 
         holder.view.setOnClickListener { _ -> clickListener.onRestaurantClick(restaurant, position) }
     }
