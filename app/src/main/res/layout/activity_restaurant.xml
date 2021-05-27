@@ -99,7 +99,7 @@
         android:onClick="onClickAddReview"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:src="@drawable/small_full_star"
+        android:src="@drawable/add"
         android:layout_alignBottom="@id/llMain"
         android:layout_alignParentStart="true"
         android:layout_marginStart="20dp"/>

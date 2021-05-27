@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.restaurantreviewer.Database.Room.DatabaseSeeder
@@ -38,6 +40,14 @@ class MainActivity : AppCompatActivity(), IItemClickListener {
             )
         }
         rvMain.layoutManager = LinearLayoutManager(this)
+        // Adding the lines in between the rows
+        rvMain.addItemDecoration(
+            DividerItemDecoration(
+                this,
+                DividerItemDecoration.VERTICAL
+            )
+        )
+
         getFilteredRestaurants()
     }
 

@@ -1,6 +1,7 @@
 package com.example.restaurantreviewer.Model
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,6 +59,13 @@ class RecycleAdapter(private val reviews: ArrayList<Review>) : RecyclerView.Adap
         {
             holder.reviewImage.setImageResource(R.drawable.image)
         }
+
+        val colours = intArrayOf(
+            Color.parseColor("#DFDFDF"),
+            Color.parseColor("#CCCCCC")
+        )
+
+        holder.itemView.setBackgroundColor(colours[position % colours.size])
 
         holder.itemView.setOnClickListener {
             // Invoking itemClickListener and passing it the position and friend
