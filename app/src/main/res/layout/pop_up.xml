@@ -76,14 +76,33 @@
             android:layout_marginTop="30dp"
             android:foreground="@drawable/box_border"/>
 
-        <ImageButton
-            android:id="@+id/ibAdd"
-            android:onClick="onClickEditReview"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/edit"
-            android:layout_gravity="bottom|end"
-            android:background="@color/white"/>
+            android:layout_marginTop="10dp">
+
+            <ImageButton
+                android:id="@+id/ibDelete"
+                android:onClick="onClickDeleteReview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/trash"
+                android:background="@color/white"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:id="@+id/ibAdd"
+                android:onClick="onClickEditReview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/edit"
+                android:background="@color/white"/>
+        </LinearLayout>
+
 
     </LinearLayout>
 
