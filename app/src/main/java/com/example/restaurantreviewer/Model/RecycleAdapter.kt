@@ -14,7 +14,7 @@ import com.example.restaurantreviewer.Database.Room.observeOnce
 import com.example.restaurantreviewer.R
 import java.time.format.DateTimeFormatter
 
-class RecycleAdapter(private val reviews: ArrayList<Review>) : RecyclerView.Adapter<RecycleAdapter.ReviewViewHolder>() {
+class RecycleAdapter(private val reviews: ArrayList<ReviewWithUser>) : RecyclerView.Adapter<RecycleAdapter.ReviewViewHolder>() {
 
     var reviewList = reviews
 
@@ -22,7 +22,7 @@ class RecycleAdapter(private val reviews: ArrayList<Review>) : RecyclerView.Adap
 
     lateinit var restRepo: RestaurantRepository
 
-    var itemClickListener: ((position: Int, review: Review) -> Unit)? = null
+    var itemClickListener: ((position: Int, review: ReviewWithUser) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReviewViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -39,19 +39,19 @@ class RecycleAdapter(private val reviews: ArrayList<Review>) : RecyclerView.Adap
 
         val element = reviewList[position]
 
-        holder.nameTxt.text = element.user?.name
+        holder.nameTxt.text = element.reviewer.name
 
         val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-        holder.dateTxt.text = element.date!!.format(formatter)
+        holder.dateTxt.text = element.reviewFromUser.date!!.format(formatter)
 
-        addStars(holder.reviewStars, context, element)
+        addStars(holder.reviewStars, context, element.reviewFromUser)
 
-        val text = element.review.toCharArray()
+        val text = element.reviewFromUser.review.toCharArray()
         val charsToShow = String(text.take(30).toCharArray()) + "..."
 
         holder.reviewTxt.text = charsToShow
 
-        if(element.picture != null)
+        if(element.reviewFromUser.picture != null)
         {
             holder.reviewImage.setImageResource(R.drawable.image)
         }

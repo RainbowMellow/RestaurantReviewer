@@ -16,10 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.restaurantreviewer.Database.Room.RestaurantRepository
 import com.example.restaurantreviewer.Database.Room.observeOnce
-import com.example.restaurantreviewer.Model.RecycleAdapter
-import com.example.restaurantreviewer.Model.Restaurant
-import com.example.restaurantreviewer.Model.Review
-import com.example.restaurantreviewer.Model.User
+import com.example.restaurantreviewer.Model.*
 import com.example.restaurantreviewer.R
 import kotlinx.android.synthetic.main.activity_restaurant.*
 import java.time.format.DateTimeFormatter
@@ -32,7 +29,7 @@ class RestaurantActivity: AppCompatActivity() {
 
     lateinit var restaurantAdapter: RecycleAdapter
 
-    var popupReview: Review? = null
+    var popupReview: ReviewWithUser? = null
 
     var chosenRestaurant = Restaurant(0, "", "", 0.0, 0.0, "")
 
@@ -56,15 +53,15 @@ class RestaurantActivity: AppCompatActivity() {
             tvOpeningHours.text = chosenRestaurant.openingHours
             restRepo.getAllRestaurantReviews(chosenRestaurant.id).observe(
                 this,
-                Observer { reviews -> 
-                    handleRecycler(reviews as ArrayList<Review>)
+                Observer { reviews ->
+                    handleRecycler(reviews as ArrayList<ReviewWithUser>)
                 }
             )
         }
 
     }
 
-    fun handleRecycler(reviews: ArrayList<Review>)
+    fun handleRecycler(reviews: ArrayList<ReviewWithUser>)
     {
         // Find the RecyclerView and make a reference to it
         val recycler = findViewById<RecyclerView>(R.id.recyclerView)
@@ -97,27 +94,21 @@ class RestaurantActivity: AppCompatActivity() {
             val dialoglayout: View = inflater.inflate(R.layout.pop_up, null)
 
             val name = dialoglayout.findViewById(R.id.tvPopUpName) as TextView
-
-            restRepo.getUserById(review.userId).observeOnce(
-                this,
-                Observer { user ->
-                    name.text = user.name
-                }
-            )
+            name.text = review.reviewer.name
 
             val date = dialoglayout.findViewById(R.id.tvPopUpDate) as TextView
             val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-            date.text = review.date!!.format(formatter)
+            date.text = review.reviewFromUser.date!!.format(formatter)
 
-            addPopUpStars(review, dialoglayout)
+            addPopUpStars(review.reviewFromUser, dialoglayout)
 
             val reviewText = dialoglayout.findViewById(R.id.tvPopUpReview) as TextView
-            reviewText.text = review.review
+            reviewText.text = review.reviewFromUser.review
 
-            if(review.picture != null)
+            if(review.reviewFromUser.picture != null)
             {
                 val picture = dialoglayout.findViewById(R.id.ivPopUpPicture) as ImageView
-                picture.setImageURI(Uri.parse(review.picture))
+                picture.setImageURI(Uri.parse(review.reviewFromUser.picture))
             }
 
             val builder = AlertDialog.Builder(this)
@@ -211,7 +202,7 @@ class RestaurantActivity: AppCompatActivity() {
 
     fun onClickEditReview(view: View) {
         val intent = Intent(this, EditCreateActivity::class.java)
-        intent.putExtra(getString(R.string.REVIEW_INTENT), popupReview!!)
+        intent.putExtra(getString(R.string.REVIEW_INTENT), popupReview!!.reviewFromUser)
         startActivityForResult(intent, getString(R.string.SAVE_REVIEW_REQUEST_CODE).toInt())
     }
 

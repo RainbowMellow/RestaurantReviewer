@@ -53,7 +53,7 @@ class RestaurantRepository private constructor (context: Context){
     fun getReviewById(id: Int?): LiveData<Review>
     = reviewDao.getReviewById(id)
 
-    fun getAllRestaurantReviews(id: Int?): LiveData<List<Review>>
+    fun getAllRestaurantReviews(id: Int?): LiveData<List<ReviewWithUser>>
     = reviewDao.getAllRestaurantReviews(id)
 
     fun getRestaurantAverageReview(restaurant: Restaurant): LiveData<Double>
