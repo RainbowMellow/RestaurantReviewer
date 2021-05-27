@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.restaurantreviewer.Model.Restaurant
 import com.example.restaurantreviewer.Model.Review
 import com.example.restaurantreviewer.R
+import kotlin.math.roundToInt
 
 class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.RestaurantHolder> {
 
@@ -39,7 +40,6 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.RestaurantHolder> {
         val restaurant = restaurants[position]
         holder.tvName.text = restaurant.name
         holder.tvAddress.text = restaurant.address
-        //holder.tvAvgRating.text = if (restaurant.avgRating != null) restaurant.avgRating.toString() else "No ratings yet"
 
         addStars(holder.llstars, context, restaurant)
 
@@ -54,23 +54,32 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.RestaurantHolder> {
     }
 
     fun addStars(reviewStars: LinearLayout, context: Context, restaurant: Restaurant) {
-        for (i in 1..(restaurant.avgRating!!.toInt())) {
-            val imgView = ImageView(context)
+        if (restaurant.avgRating == null) {
+            val tvNoStars: TextView = TextView(context)
+            reviewStars.addView(tvNoStars)
+            tvNoStars.text = "No rating yet"
+        } else {
+            val roundedRating = restaurant.avgRating!!.roundToInt()
 
-            imgView.setBackgroundResource(R.drawable.small_full_star)
+            for (i in 1..roundedRating) {
+                val imgView = ImageView(context)
 
-            reviewStars.addView(imgView)
+                imgView.setBackgroundResource(R.drawable.small_full_star)
+
+                reviewStars.addView(imgView)
+            }
+
+            val emptyStars = 5- roundedRating
+
+            for (i in 1..emptyStars) {
+                val imgView = ImageView(context)
+
+                imgView.setBackgroundResource(R.drawable.small_empty_star)
+
+                reviewStars.addView(imgView)
+            }
         }
 
-        val emptyStars = 5- restaurant.avgRating!!.toInt()
-
-        for (i in 1..emptyStars) {
-            val imgView = ImageView(context)
-
-            imgView.setBackgroundResource(R.drawable.small_empty_star)
-
-            reviewStars.addView(imgView)
-        }
     }
 
     override fun getItemCount(): Int {
