@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.restaurantreviewer.Database.Room.DatabaseSeeder
 import com.example.restaurantreviewer.Database.Room.RestaurantRepository
 import com.example.restaurantreviewer.Database.Room.observeOnce
 import com.example.restaurantreviewer.Model.Filter
@@ -16,7 +17,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 private lateinit var restRepo: RestaurantRepository
 private val TAG = "MainActivity"
-private val RESTAURANTS_DATA = "restaurants" // turnsafety
+private val FILTER_DATA = "filter" // turnsafety
 private var filter: Filter = Filter("id", true, null)
 private lateinit var viewedRestaurants: List<Restaurant>
 
@@ -26,21 +27,18 @@ class MainActivity : AppCompatActivity(), IItemClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         restRepo = RestaurantRepository.get()
-        /*if (savedInstanceState != null) {
-            restaurants = savedInstanceState.getSerializable(RESTAURANTS_DATA) as ArrayList<Restaurant>
+        if (savedInstanceState != null) {
+            filter = savedInstanceState.getSerializable(FILTER_DATA) as Filter
         } else {
-            restaurants = restRepo.getAll()
-            restaurants.forEach { restaurant -> calculateAverageRating(restaurant) }
-        }*/
+            restRepo.getAllRestaurants().observeOnce(
+                this,
+                Observer { restaurants ->
+                    restaurants.forEach { restaurant -> calculateAverageRating(restaurant) }
+                }
+            )
+        }
         rvMain.layoutManager = LinearLayoutManager(this)
-        restRepo.getAllRestaurants().observeOnce(
-            this,
-            Observer { restaurants ->
-                restaurants.forEach { restaurant -> calculateAverageRating(restaurant) }
-                updateList(restaurants)
-            }
-        )
-        // getFilteredRestaurants()
+        getFilteredRestaurants()
     }
 
     fun getFilteredRestaurants() {
@@ -148,7 +146,7 @@ class MainActivity : AppCompatActivity(), IItemClickListener {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        // outState.putSerializable(RESTAURANTS_DATA, restaurants)
+        outState.putSerializable(FILTER_DATA, filter)
     }
 
 

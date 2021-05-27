@@ -5,7 +5,7 @@ import com.example.restaurantreviewer.Model.Review
 import com.example.restaurantreviewer.Model.User
 import java.time.LocalDate
 
-class DatabaseSeeder {
+class DatabaseSeeder() {
 
     fun seed() {
         println("---starting to seed")
