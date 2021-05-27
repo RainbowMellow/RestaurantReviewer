@@ -1,4 +1,4 @@
-package com.example.restaurantreviewer.Model
+package com.example.restaurantreviewer.GUI.RecycleAdapters
 
 import android.content.Context
 import android.graphics.Color
@@ -10,20 +10,24 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.restaurantreviewer.Database.Room.RestaurantRepository
-import com.example.restaurantreviewer.Database.Room.observeOnce
+import com.example.restaurantreviewer.Model.Review
+import com.example.restaurantreviewer.Model.ReviewWithUser
 import com.example.restaurantreviewer.R
 import java.text.SimpleDateFormat
-import java.time.format.DateTimeFormatter
 
-class RecycleAdapter(private val reviews: ArrayList<ReviewWithUser>) : RecyclerView.Adapter<RecycleAdapter.ReviewViewHolder>() {
+class ReviewRecycleAdapter : RecyclerView.Adapter<ReviewRecycleAdapter.ReviewViewHolder> {
 
-    var reviewList = reviews
+    val reviewList: ArrayList<ReviewWithUser>
 
     lateinit var context: Context
-
     lateinit var restRepo: RestaurantRepository
 
     var itemClickListener: ((position: Int, review: ReviewWithUser) -> Unit)? = null
+
+    constructor(reviews: ArrayList<ReviewWithUser>) {
+        reviewList = reviews
+    }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReviewViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -41,17 +45,22 @@ class RecycleAdapter(private val reviews: ArrayList<ReviewWithUser>) : RecyclerV
         val element = reviewList[position]
 
         holder.nameTxt.text = element.reviewer.name
-
-        // val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
         val formatter: SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
         holder.dateTxt.text = formatter.format(element.reviewFromUser.date!!)
 
         addStars(holder.reviewStars, context, element.reviewFromUser)
 
-        val text = element.reviewFromUser.review.toCharArray()
-        val charsToShow = String(text.take(30).toCharArray()) + "..."
 
-        holder.reviewTxt.text = charsToShow
+        val text = element.reviewFromUser.review.toCharArray()
+        if(text.size > 30)
+        {
+            val charsToShow = String(text.take(30).toCharArray()) + "..."
+            holder.reviewTxt.text = charsToShow
+        }
+        else {
+            holder.reviewTxt.text = element.reviewFromUser.review
+        }
+
 
         if(element.reviewFromUser.picture != null)
         {
@@ -66,7 +75,6 @@ class RecycleAdapter(private val reviews: ArrayList<ReviewWithUser>) : RecyclerV
         holder.itemView.setBackgroundColor(colours[position % colours.size])
 
         holder.itemView.setOnClickListener {
-            // Invoking itemClickListener and passing it the position and friend
             itemClickListener?.invoke(position, element)
         }
     }
@@ -96,12 +104,22 @@ class RecycleAdapter(private val reviews: ArrayList<ReviewWithUser>) : RecyclerV
         return reviewList.size
     }
 
-    class ReviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val nameTxt = itemView.findViewById(R.id.tvName) as TextView
-        val dateTxt = itemView.findViewById(R.id.tvDate) as TextView
-        val reviewTxt = itemView.findViewById(R.id.tvReview) as TextView
-        val reviewStars = itemView.findViewById(R.id.llReviewStars) as LinearLayout
-        val reviewImage = itemView.findViewById(R.id.ivPicture) as ImageView
-    }
+    class ReviewViewHolder : RecyclerView.ViewHolder {
 
+        var view: View
+        var nameTxt: TextView
+        var dateTxt: TextView
+        var reviewTxt: TextView
+        var reviewStars: LinearLayout
+        var reviewImage: ImageView
+
+        constructor(v: View) : super(v) {
+            view = v
+            nameTxt = itemView.findViewById(R.id.tvName)
+            dateTxt = itemView.findViewById(R.id.tvDate)
+            reviewTxt = itemView.findViewById(R.id.tvReview)
+            reviewStars = itemView.findViewById(R.id.llReviewStars)
+            reviewImage = itemView.findViewById(R.id.ivPicture)
+        }
+    }
 }

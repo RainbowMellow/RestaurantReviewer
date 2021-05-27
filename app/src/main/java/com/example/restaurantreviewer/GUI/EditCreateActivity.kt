@@ -8,7 +8,6 @@ import android.graphics.Color
 import android.icu.text.SimpleDateFormat
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -19,20 +18,18 @@ import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import androidx.core.widget.doAfterTextChanged
+import androidx.lifecycle.Observer
 import com.example.restaurantreviewer.Database.Room.RestaurantRepository
-import com.example.restaurantreviewer.Model.Restaurant
+import com.example.restaurantreviewer.Database.Room.observeOnce
 import com.example.restaurantreviewer.Model.Review
-import com.example.restaurantreviewer.Model.User
 import com.example.restaurantreviewer.R
 import kotlinx.android.synthetic.main.activity_editcreate.*
 import java.io.File
-import java.time.LocalDate
 import java.util.*
-import androidx.lifecycle.Observer
-import com.example.restaurantreviewer.Database.Room.observeOnce
 
 class EditCreateActivity : AppCompatActivity() {
 
@@ -44,9 +41,12 @@ class EditCreateActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_editcreate)
+
         setupRatingsSpinner()
         setupEditReviewText()
+
         restRepo = RestaurantRepository.get()
+
         if (intent.extras != null) {
             val extras: Bundle = intent.extras!!
             review = extras.getSerializable(getString(R.string.REVIEW_INTENT)) as Review
@@ -62,12 +62,9 @@ class EditCreateActivity : AppCompatActivity() {
                     tvReviewerInfo.text = getString(R.string.reviewerInfo, user.name)
                 }
             )
-            // if new review (id has not been assigned yet)
-            if (review.id == null) {
-                // put stuff here if necessary
-            }
-            // if old review (id is different from 0 as it has been assigned already)
-            else {
+
+            // Insert information from review in fields (If it isn't a new review)
+            if (review.id != null) {
                 setImageFromFileString(imgReview, review.picture)
                 spRating.setSelection(review.rating-1)
                 if (review.review.isBlank()) {
@@ -75,8 +72,9 @@ class EditCreateActivity : AppCompatActivity() {
                 } else {
                     etReview.setText(review.review)
                 }
-                countCharacters(etReview.text.toString())
             }
+            countCharacters(etReview.text.toString())
+
         } else {
             val errorMsg = "Intent is empty"
             failure(errorMsg)
@@ -91,6 +89,7 @@ class EditCreateActivity : AppCompatActivity() {
         } else {
             review.rating = spRating.selectedItem.toString().toInt()
         }
+
         val intent = Intent()
         if (review.id == null) {
             review.date = Date()
@@ -111,6 +110,7 @@ class EditCreateActivity : AppCompatActivity() {
 
     private fun failure(errorMsg: String) {
         Log.d(TAG, errorMsg)
+
         val intent = Intent()
         intent.putExtra(getString(R.string.ERROR_INTENT), errorMsg)
         setResult(getString(R.string.RESULT_FAILED).toInt())
@@ -133,6 +133,7 @@ class EditCreateActivity : AppCompatActivity() {
 
     private fun countCharacters(text: String) {
         tvWordCount.text = getString(R.string.tvWordCount, text.length)
+
         if (text.length == 150) {
             tvWordCount.setTextColor(Color.RED)
         } else if (text.length >= 140) {
@@ -142,6 +143,7 @@ class EditCreateActivity : AppCompatActivity() {
         }
     }
 
+    //region Camera
     fun onClickTakePicture(view: View) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val permissions = mutableListOf<String>()
@@ -205,6 +207,7 @@ class EditCreateActivity : AppCompatActivity() {
             }
         }
     }
+    //endregion
 
     fun onClickRemovePicture(view: View) {
         review.picture = null
@@ -213,7 +216,7 @@ class EditCreateActivity : AppCompatActivity() {
 
     private fun setImageFromFileString(img: ImageView, fileString: String?) {
         if (fileString != null) {
-            var uri = Uri.parse(fileString)
+            val uri = Uri.parse(fileString)
             img.setImageURI(uri)
         } else {
             img.setImageResource(R.drawable.addimage)

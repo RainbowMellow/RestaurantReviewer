@@ -1,4 +1,4 @@
-package com.example.restaurantreviewer.GUI
+package com.example.restaurantreviewer.GUI.RecycleAdapters
 
 import com.example.restaurantreviewer.Model.Restaurant
 

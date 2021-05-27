@@ -11,14 +11,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.restaurantreviewer.Database.Room.DatabaseSeeder
 import com.example.restaurantreviewer.Database.Room.RestaurantRepository
 import com.example.restaurantreviewer.Database.Room.observeOnce
+import com.example.restaurantreviewer.GUI.RecycleAdapters.IItemClickListener
+import com.example.restaurantreviewer.GUI.RecycleAdapters.RestaurantRecyclerAdapter
 import com.example.restaurantreviewer.Model.Filter
 import com.example.restaurantreviewer.Model.Restaurant
 import com.example.restaurantreviewer.R
 import kotlinx.android.synthetic.main.activity_main.*
 
 private lateinit var restRepo: RestaurantRepository
-private val TAG = "MainActivity"
-private val FILTER_DATA = "filter" // turnsafety
+private val FILTER_DATA = "filter"
 private var filter: Filter = Filter("id", true, null)
 private lateinit var viewedRestaurants: List<Restaurant>
 
@@ -27,7 +28,9 @@ class MainActivity : AppCompatActivity(), IItemClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         val seeder = DatabaseSeeder()
+
         restRepo = RestaurantRepository.get()
         restRepo.getNumberOfRestaurants().observeOnce(
             this,
@@ -38,6 +41,8 @@ class MainActivity : AppCompatActivity(), IItemClickListener {
                 }
             }
         )
+
+        //region Turn-safety
         if (savedInstanceState != null) {
             filter = savedInstanceState.getSerializable(FILTER_DATA) as Filter
         } else {
@@ -48,7 +53,11 @@ class MainActivity : AppCompatActivity(), IItemClickListener {
                 }
             )
         }
+        //endregion
+
+        // rvMain = RecyclerView Main
         rvMain.layoutManager = LinearLayoutManager(this)
+
         // Adding the lines in between the rows
         rvMain.addItemDecoration(
             DividerItemDecoration(
@@ -73,7 +82,7 @@ class MainActivity : AppCompatActivity(), IItemClickListener {
     }
 
     fun updateList(restaurants: List<Restaurant>) {
-        rvMain.adapter = RecyclerAdapter(this, restaurants as ArrayList<Restaurant>, this)
+        rvMain.adapter = RestaurantRecyclerAdapter(this, restaurants as ArrayList<Restaurant>, this)
     }
 
     fun calculateAverageRating(restaurant: Restaurant) {
@@ -86,6 +95,7 @@ class MainActivity : AppCompatActivity(), IItemClickListener {
         )
     }
 
+    //region Menu
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
@@ -144,10 +154,7 @@ class MainActivity : AppCompatActivity(), IItemClickListener {
         }
         return super.onOptionsItemSelected(item)
     }
-
-    fun filterRestaurants() {
-
-    }
+    //endregion
 
     override fun onRestaurantClick(restaurant: Restaurant, position: Int) {
         val intent = Intent(this, RestaurantActivity::class.java)
@@ -167,7 +174,4 @@ class MainActivity : AppCompatActivity(), IItemClickListener {
         super.onSaveInstanceState(outState)
         outState.putSerializable(FILTER_DATA, filter)
     }
-
-
-
 }

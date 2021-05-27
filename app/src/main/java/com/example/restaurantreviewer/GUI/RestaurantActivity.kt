@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.restaurantreviewer.Database.Room.RestaurantRepository
 import com.example.restaurantreviewer.Database.Room.observeOnce
+import com.example.restaurantreviewer.GUI.RecycleAdapters.ReviewRecycleAdapter
 import com.example.restaurantreviewer.Model.*
 import com.example.restaurantreviewer.R
 import kotlinx.android.synthetic.main.activity_restaurant.*
@@ -27,13 +28,10 @@ import kotlin.math.roundToInt
 class RestaurantActivity: AppCompatActivity() {
 
     lateinit var restRepo: RestaurantRepository
-
-    lateinit var restaurantAdapter: RecycleAdapter
-
+    lateinit var restaurantAdapter: ReviewRecycleAdapter
     lateinit var alertDialog: AlertDialog
 
     var popupReview: ReviewWithUser? = null
-
     var chosenRestaurant = Restaurant(0, "", "", 0.0, 0.0, "")
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -86,7 +84,7 @@ class RestaurantActivity: AppCompatActivity() {
         // Gets the list of friends from the repository
         // and converts it to a list the recycler can use.
 
-        restaurantAdapter = RecycleAdapter(reviews)
+        restaurantAdapter = ReviewRecycleAdapter(reviews)
         recycler.adapter = restaurantAdapter
 
         restaurantAdapter.itemClickListener = { position, review ->

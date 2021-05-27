@@ -36,4 +36,9 @@
     <string name="REVIEW_UPDATED">Review updated</string>
     <string name="REVIEW_FAILURE">Operation failed</string>
     <string name="UNKNOWN_RESULT_CODE_RETURNED">Unexpected behaviour</string>
+    <string name="click_restaurant_to_open">Click restaurant to open</string>
+    <string name="pop_up_name">Name</string>
+    <string name="pop_up_date">Date</string>
+    <string name="review_cell_name">Name</string>
+    <string name="review_cell_date">Date</string>
 </resources>
