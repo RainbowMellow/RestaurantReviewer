@@ -1,12 +1,8 @@
-package com.example.restaurantreviewer.Database
+package com.example.restaurantreviewer.Database.InMemory
 
 import android.content.Context
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.example.restaurantreviewer.Model.Review
-import com.example.restaurantreviewer.Model.User
 import java.time.LocalDate
-import java.util.*
 import kotlin.collections.ArrayList
 
 class ReviewRepository private constructor(context: Context){
@@ -29,7 +25,7 @@ class ReviewRepository private constructor(context: Context){
         return reviewList
     }
 
-    fun getForOneRestaurant(id: Int): ArrayList<Review> {
+    fun getForOneRestaurant(id: Int?): ArrayList<Review> {
         return reviewList.filter { r -> r.restaurantId == id } as ArrayList<Review>
     }
 
