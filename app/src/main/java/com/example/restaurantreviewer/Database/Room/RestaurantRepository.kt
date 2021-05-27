@@ -29,6 +29,9 @@ class RestaurantRepository private constructor (context: Context){
 
     fun getNumberOfRestaurants(): LiveData<Int> = restaurantDao.getNumberOfRestaurants()
 
+    fun getFilteredRestaurants(filter: Filter): LiveData<List<Restaurant>>
+    = restaurantDao.getFilteredRestaurants(filter.orderBy, filter.asc, filter.avg)
+
     fun insertRestaurant(restaurant: Restaurant)
     = executor.execute { restaurantDao.insertRestaurant(restaurant) }
 

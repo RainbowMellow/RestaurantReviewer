@@ -7,11 +7,9 @@ import com.example.restaurantreviewer.Model.Review
 @Dao
 interface ReviewDao {
 
-    @Transaction
     @Query("SELECT * FROM Review WHERE id=(:id)")
     fun getReviewById(id: Int): LiveData<Review>
 
-    @Transaction
     @Query("SELECT * FROM Review WHERE restaurantId=(:id)")
     fun getAllRestaurantReviews(id: Int): LiveData<List<Review>>
 
