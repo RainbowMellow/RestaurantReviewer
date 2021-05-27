@@ -38,6 +38,7 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.RestaurantHolder> {
 
     override fun onBindViewHolder(holder: RestaurantHolder, position: Int) {
         val restaurant = restaurants[position]
+
         holder.tvName.text = restaurant.name
         holder.tvAddress.text = restaurant.address
 
@@ -54,6 +55,7 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.RestaurantHolder> {
     }
 
     fun addStars(reviewStars: LinearLayout, context: Context, restaurant: Restaurant) {
+        reviewStars.removeAllViewsInLayout()
         if (restaurant.avgRating == null) {
             val tvNoStars: TextView = TextView(context)
             reviewStars.addView(tvNoStars)

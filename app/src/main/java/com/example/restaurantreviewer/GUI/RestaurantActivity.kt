@@ -19,7 +19,7 @@ import com.example.restaurantreviewer.Database.Room.observeOnce
 import com.example.restaurantreviewer.Model.*
 import com.example.restaurantreviewer.R
 import kotlinx.android.synthetic.main.activity_restaurant.*
-import java.time.format.DateTimeFormatter
+import java.text.SimpleDateFormat
 import kotlin.math.roundToInt
 
 
@@ -97,8 +97,9 @@ class RestaurantActivity: AppCompatActivity() {
             name.text = review.reviewer.name
 
             val date = dialoglayout.findViewById(R.id.tvPopUpDate) as TextView
-            val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-            date.text = review.reviewFromUser.date!!.format(formatter)
+            // val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+            val formatter: SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
+            date.text = formatter.format(review.reviewFromUser.date!!)
 
             addPopUpStars(review.reviewFromUser, dialoglayout)
 
@@ -108,6 +109,9 @@ class RestaurantActivity: AppCompatActivity() {
             if(review.reviewFromUser.picture != null)
             {
                 val picture = dialoglayout.findViewById(R.id.ivPopUpPicture) as ImageView
+                val lp = LinearLayout.LayoutParams(300, 300)
+                picture.layoutParams = lp
+                picture.scaleType = ImageView.ScaleType.CENTER_INSIDE
                 picture.setImageURI(Uri.parse(review.reviewFromUser.picture))
             }
 
@@ -121,8 +125,14 @@ class RestaurantActivity: AppCompatActivity() {
         }
     }
 
-
     fun addStars() {
+        llStars.removeAllViewsInLayout()
+        restRepo.getRestaurantAverageReview(chosenRestaurant).observeOnce(
+            this,
+            Observer { avg ->
+                chosenRestaurant.avgRating = avg
+            }
+        )
         if (chosenRestaurant.avgRating == null) {
             val tvNoStars: TextView = TextView(this)
             llStars.addView(tvNoStars)
@@ -193,7 +203,7 @@ class RestaurantActivity: AppCompatActivity() {
         restRepo.getUserById(1).observeOnce(
             this,
             Observer { user ->
-                val review = Review(id = 0, userId = user.id, restaurantId = chosenRestaurant.id, rating = 0)
+                val review = Review(null, userId = user.id, restaurantId = chosenRestaurant.id, rating = 0)
                 intent.putExtra(getString(R.string.REVIEW_INTENT), review)
                 startActivityForResult(intent, getString(R.string.SAVE_REVIEW_REQUEST_CODE).toInt())
             }
@@ -216,11 +226,13 @@ class RestaurantActivity: AppCompatActivity() {
                 getString(R.string.RESULT_CREATED).toInt() -> {
                     var review: Review = data?.extras?.getSerializable(getString(R.string.REVIEW_INTENT)) as Review
                     restRepo.insertReview(review)
+                    addStars()
                     Toast.makeText(this, getString(R.string.REVIEW_CREATED), Toast.LENGTH_SHORT).show()
                 }
                 getString(R.string.RESULT_UPDATED).toInt() -> {
                     var review: Review = data?.extras?.getSerializable(getString(R.string.REVIEW_INTENT)) as Review
                     restRepo.updateReview(review)
+                    addStars()
                     Toast.makeText(this, getString(R.string.REVIEW_UPDATED), Toast.LENGTH_SHORT).show()
                 }
                 getString(R.string.RESULT_FAILED).toInt() -> {

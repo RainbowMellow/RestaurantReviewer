@@ -10,15 +10,15 @@ class ReviewRepository private constructor(context: Context){
     private var reviewList = ArrayList<Review>()
 
     fun addMockData() {
-        reviewList = arrayListOf(
-            Review(id = 1, userId = 1, restaurantId = 1, review = "Good service", rating = 5, picture = null, date = LocalDate.now()),
-            Review(id = 2, userId = 2, restaurantId = 2, review = "Very bad service. The food was very bad, and I am very disappointed!", rating = 1, picture = "", date = LocalDate.now()),
-            Review(id = 3, userId = 3, restaurantId = 3, review = "Okay", rating = 3, picture = null, date = LocalDate.now()),
-            Review(id = 4, userId = 4, restaurantId = 4, review = "I didn't like the food", rating = 2, picture = null, date = LocalDate.now()),
-            Review(id = 5, userId = 4, restaurantId = 5, review = "It tasted great", rating = 4, picture = null, date = LocalDate.now()),
-            Review(id = 6, userId = 2, restaurantId = 2, review = "Bad service, bad place, bad company. Ruined my mood!!!!!!", rating = 3, picture = null, date = LocalDate.now()),
-            Review(id = 7, userId = 3, restaurantId = 2, review = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", rating = 3, picture = null, date = LocalDate.now())
-        )
+        /*reviewList = arrayListOf(
+            Review(id = 1, userId = 1, restaurantId = 1, review = "Good service", rating = 5, picture = null, date = Date()),
+            Review(id = 2, userId = 2, restaurantId = 2, review = "Very bad service. The food was very bad, and I am very disappointed!", rating = 1, picture = "", date = Date()),
+            Review(id = 3, userId = 3, restaurantId = 3, review = "Okay", rating = 3, picture = null, date = Date()),
+            Review(id = 4, userId = 4, restaurantId = 4, review = "I didn't like the food", rating = 2, picture = null, date = Date()),
+            Review(id = 5, userId = 4, restaurantId = 5, review = "It tasted great", rating = 4, picture = null, date = Date()),
+            Review(id = 6, userId = 2, restaurantId = 2, review = "Bad service, bad place, bad company. Ruined my mood!!!!!!", rating = 3, picture = null, date = Date()),
+            Review(id = 7, userId = 3, restaurantId = 2, review = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", rating = 3, picture = null, date = Date())
+        )*/
     }
 
     fun getAll(): ArrayList<Review> {

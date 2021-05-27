@@ -1,19 +1,19 @@
 package com.example.restaurantreviewer.Database.Room
 
 import androidx.room.TypeConverter
-import java.time.LocalDate
-import java.time.ZoneId
+import java.util.*
 
 class RestaurantConverters {
-    
+
     @TypeConverter
-    fun fromDate(date: LocalDate?): Long? {
-        val zoneId: ZoneId = ZoneId.systemDefault()
-        return date?.atStartOfDay(zoneId)?.toEpochSecond()
+    fun fromDate(date: Date?): Long? {
+        return date?.time
     }
 
     @TypeConverter
-    fun toDate(value: Long?): LocalDate? {
-        return value?.let { LocalDate.ofEpochDay(it) }
+    fun toDate(millisSinceEpoch: Long?): Date? {
+        return millisSinceEpoch?.let {
+            Date(it)
+        }
     }
 }

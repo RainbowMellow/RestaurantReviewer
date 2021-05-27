@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import java.io.Serializable
-import java.time.LocalDate
+import java.util.*
 
 @Entity
 data class Review (
@@ -14,8 +14,5 @@ data class Review (
     var review: String = "",
     var rating: Int,
     var picture: String? = null,
-    var date: LocalDate? = null,
-    @Ignore var user: User? = null
-    ): Serializable {
-        constructor(): this(null, null, null, "", 0, null, null, null)
-    }
+    var date: Date? = null
+    ): Serializable

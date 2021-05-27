@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.restaurantreviewer.Database.Room.RestaurantRepository
 import com.example.restaurantreviewer.Database.Room.observeOnce
 import com.example.restaurantreviewer.R
+import java.text.SimpleDateFormat
 import java.time.format.DateTimeFormatter
 
 class RecycleAdapter(private val reviews: ArrayList<ReviewWithUser>) : RecyclerView.Adapter<RecycleAdapter.ReviewViewHolder>() {
@@ -41,8 +42,9 @@ class RecycleAdapter(private val reviews: ArrayList<ReviewWithUser>) : RecyclerV
 
         holder.nameTxt.text = element.reviewer.name
 
-        val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-        holder.dateTxt.text = element.reviewFromUser.date!!.format(formatter)
+        // val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        val formatter: SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
+        holder.dateTxt.text = formatter.format(element.reviewFromUser.date!!)
 
         addStars(holder.reviewStars, context, element.reviewFromUser)
 
@@ -70,6 +72,7 @@ class RecycleAdapter(private val reviews: ArrayList<ReviewWithUser>) : RecyclerV
     }
 
     fun addStars(reviewStars: LinearLayout, context: Context, review: Review) {
+        reviewStars.removeAllViewsInLayout()
         for (i in 1..review.rating) {
             val imgView = ImageView(context)
 

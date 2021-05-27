@@ -4,8 +4,9 @@ import com.example.restaurantreviewer.Model.Restaurant
 import com.example.restaurantreviewer.Model.Review
 import com.example.restaurantreviewer.Model.User
 import java.time.LocalDate
+import java.util.*
 
-class DatabaseSeeder() {
+class DatabaseSeeder {
 
     fun seed() {
         println("---starting to seed")
@@ -25,13 +26,13 @@ class DatabaseSeeder() {
             User(id = null, name = "Per"),
         )
         val reviewList = arrayListOf<Review>(
-            Review(id = null, userId = 1, restaurantId = 1, review = "Good service", rating = 5, picture = null, date = LocalDate.now()),
-            Review(id = null, userId = 2, restaurantId = 2, review = "Very bad service. The food was very bad, and I am very disappointed!", rating = 1, picture = "", date = LocalDate.now()),
-            Review(id = null, userId = 3, restaurantId = 3, review = "Okay", rating = 3, picture = null, date = LocalDate.now()),
-            Review(id = null, userId = 4, restaurantId = 4, review = "I didn't like the food", rating = 2, picture = null, date = LocalDate.now()),
-            Review(id = null, userId = 4, restaurantId = 5, review = "It tasted great", rating = 4, picture = null, date = LocalDate.now()),
-            Review(id = null, userId = 2, restaurantId = 2, review = "Bad service, bad place, bad company. Ruined my mood!!!!!!", rating = 1, picture = null, date = LocalDate.now()),
-            Review(id = null, userId = 3, restaurantId = 2, review = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", rating = 2, picture = null, date = LocalDate.now())
+            Review(id = null, userId = 1, restaurantId = 1, review = "Good service", rating = 5, picture = null, date = Date()),
+            Review(id = null, userId = 2, restaurantId = 2, review = "Very bad service. The food was very bad, and I am very disappointed!", rating = 1, picture = "", date = Date()),
+            Review(id = null, userId = 3, restaurantId = 3, review = "Okay", rating = 3, picture = null, date = Date()),
+            Review(id = null, userId = 4, restaurantId = 4, review = "I didn't like the food", rating = 2, picture = null, date = Date()),
+            Review(id = null, userId = 4, restaurantId = 5, review = "It tasted great", rating = 4, picture = null, date = Date()),
+            Review(id = null, userId = 2, restaurantId = 2, review = "Bad service, bad place, bad company. Ruined my mood!!!!!!", rating = 1, picture = null, date = Date()),
+            Review(id = null, userId = 3, restaurantId = 2, review = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", rating = 2, picture = null, date = Date())
         )
         restaurantList.forEach { restaurant -> repo.insertRestaurant(restaurant) }
         userList.forEach { user -> repo.insertUser(user) }

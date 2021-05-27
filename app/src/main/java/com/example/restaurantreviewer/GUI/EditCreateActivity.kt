@@ -22,8 +22,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import androidx.core.widget.doAfterTextChanged
-import com.example.restaurantreviewer.Database.InMemory.RestaurantRepository
-import com.example.restaurantreviewer.Database.InMemory.UserRepository
+import com.example.restaurantreviewer.Database.Room.RestaurantRepository
 import com.example.restaurantreviewer.Model.Restaurant
 import com.example.restaurantreviewer.Model.Review
 import com.example.restaurantreviewer.Model.User
@@ -32,13 +31,13 @@ import kotlinx.android.synthetic.main.activity_editcreate.*
 import java.io.File
 import java.time.LocalDate
 import java.util.*
-import kotlin.NoSuchElementException
+import androidx.lifecycle.Observer
+import com.example.restaurantreviewer.Database.Room.observeOnce
 
 class EditCreateActivity : AppCompatActivity() {
 
     private lateinit var review: Review
     private lateinit var restRepo: RestaurantRepository
-    private lateinit var userRepo: UserRepository
     private var pictureFile: File? = null
     private val TAG = "EditCreateActivity"
 
@@ -47,23 +46,24 @@ class EditCreateActivity : AppCompatActivity() {
         setContentView(R.layout.activity_editcreate)
         setupRatingsSpinner()
         setupEditReviewText()
+        restRepo = RestaurantRepository.get()
         if (intent.extras != null) {
-            // remember to take room into account later
-            restRepo = RestaurantRepository.get()
-            userRepo = UserRepository.get()
             val extras: Bundle = intent.extras!!
             review = extras.getSerializable(getString(R.string.REVIEW_INTENT)) as Review
-            try {
-                val restaurant: Restaurant = restRepo.getRestaurantById(review.restaurantId)
-                val user: User = userRepo.getUserById(review.userId)
-                tvRestaurantInfo.text = getString(R.string.restaurantInfo, restaurant.name)
-                tvReviewerInfo.text = getString(R.string.reviewerInfo, user.name)
-            } catch (e: NoSuchElementException) {
-                val errorMsg = "Restaurant or user not found"
-                failure(errorMsg)
-            }
+            restRepo.getRestaurantById(review.restaurantId).observeOnce(
+                this,
+                Observer { restaurant ->
+                    tvRestaurantInfo.text = getString(R.string.restaurantInfo, restaurant.name)
+                }
+            )
+            restRepo.getUserById(review.userId).observeOnce(
+                this,
+                Observer { user ->
+                    tvReviewerInfo.text = getString(R.string.reviewerInfo, user.name)
+                }
+            )
             // if new review (id has not been assigned yet)
-            if (review.id == 0) {
+            if (review.id == null) {
                 // put stuff here if necessary
             }
             // if old review (id is different from 0 as it has been assigned already)
@@ -92,8 +92,8 @@ class EditCreateActivity : AppCompatActivity() {
             review.rating = spRating.selectedItem.toString().toInt()
         }
         val intent = Intent()
-        if (review.id == 0) {
-            review.date = LocalDate.now()
+        if (review.id == null) {
+            review.date = Date()
             intent.putExtra(getString(R.string.REVIEW_INTENT), review)
             setResult(getString(R.string.RESULT_CREATED).toInt(), intent)
         } else {
