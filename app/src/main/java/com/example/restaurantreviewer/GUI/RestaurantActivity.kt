@@ -3,6 +3,7 @@ package com.example.restaurantreviewer.GUI
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -28,6 +29,8 @@ class RestaurantActivity: AppCompatActivity() {
     lateinit var restRepo: RestaurantRepository
 
     lateinit var restaurantAdapter: RecycleAdapter
+
+    lateinit var alertDialog: AlertDialog
 
     var popupReview: ReviewWithUser? = null
 
@@ -110,6 +113,7 @@ class RestaurantActivity: AppCompatActivity() {
             {
                 val picture = dialoglayout.findViewById(R.id.ivPopUpPicture) as ImageView
                 val lp = LinearLayout.LayoutParams(300, 300)
+                lp.gravity = Gravity.CENTER
                 picture.layoutParams = lp
                 picture.scaleType = ImageView.ScaleType.CENTER_INSIDE
                 picture.setImageURI(Uri.parse(review.reviewFromUser.picture))
@@ -119,7 +123,7 @@ class RestaurantActivity: AppCompatActivity() {
 
             builder.setView(dialoglayout)
 
-            val alertDialog: AlertDialog = builder.create()
+            alertDialog = builder.create()
 
             alertDialog.show()
         }
@@ -232,6 +236,7 @@ class RestaurantActivity: AppCompatActivity() {
                 getString(R.string.RESULT_UPDATED).toInt() -> {
                     var review: Review = data?.extras?.getSerializable(getString(R.string.REVIEW_INTENT)) as Review
                     restRepo.updateReview(review)
+                    alertDialog.dismiss()
                     addStars()
                     Toast.makeText(this, getString(R.string.REVIEW_UPDATED), Toast.LENGTH_SHORT).show()
                 }
@@ -245,6 +250,11 @@ class RestaurantActivity: AppCompatActivity() {
         }
     }
 
+    fun onClickDeleteReview(view: View) {
+        restRepo.deleteReview(popupReview!!.reviewFromUser)
+        alertDialog.dismiss()
+        addStars()
+    }
 
 
 }
