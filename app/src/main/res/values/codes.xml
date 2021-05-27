@@ -7,4 +7,6 @@
     <string name="RESULT_FAILED">5</string>
     <string name="PERMISSION_REQUEST_CODE">6</string>
     <string name="CAMERA_REQUEST_CODE">7</string>
+    <string name="MAP_GLOBAL_CODE">8</string>
+    <string name="MAP_SINGLE_CODE">9</string>
 </resources>

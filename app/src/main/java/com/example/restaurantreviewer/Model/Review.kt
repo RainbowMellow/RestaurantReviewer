@@ -1,14 +1,18 @@
 package com.example.restaurantreviewer.Model
 
+import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.PrimaryKey
 import java.io.Serializable
 import java.time.LocalDate
 
+@Entity
 data class Review (
-    var id: Int,
-    var userId: Int,
-    var restaurantId: Int,
+    @PrimaryKey (autoGenerate = true) var id: Int?,
+    var userId: Int?,
+    var restaurantId: Int?,
     var review: String = "",
     var rating: Int,
     var picture: String? = null,
     var date: LocalDate? = null
-        ): Serializable
+    ): Serializable

@@ -22,8 +22,8 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import androidx.core.widget.doAfterTextChanged
-import com.example.restaurantreviewer.Database.RestaurantRepository
-import com.example.restaurantreviewer.Database.UserRepository
+import com.example.restaurantreviewer.Database.InMemory.RestaurantRepository
+import com.example.restaurantreviewer.Database.InMemory.UserRepository
 import com.example.restaurantreviewer.Model.Restaurant
 import com.example.restaurantreviewer.Model.Review
 import com.example.restaurantreviewer.Model.User

@@ -1,8 +1,7 @@
-package com.example.restaurantreviewer.Database
+package com.example.restaurantreviewer.Database.InMemory
 
 import android.content.Context
 import com.example.restaurantreviewer.Model.Restaurant
-import com.example.restaurantreviewer.Model.User
 
 class RestaurantRepository private constructor(context: Context){
 
@@ -27,7 +26,7 @@ class RestaurantRepository private constructor(context: Context){
         }
     }
 
-    fun getRestaurantById(id: Int): Restaurant {
+    fun getRestaurantById(id: Int?): Restaurant {
         return restaurantList.first { restaurant -> restaurant.id == id }
     }
 

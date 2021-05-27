@@ -9,7 +9,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.restaurantreviewer.Database.UserRepository
+import com.example.restaurantreviewer.Database.InMemory.UserRepository
 import com.example.restaurantreviewer.R
 import java.time.format.DateTimeFormatter
 
@@ -29,7 +29,6 @@ class RecycleAdapter(private val reviews: ArrayList<Review>) : RecyclerView.Adap
 
         UserRepository.initialize(parent.context)
         userRepository = UserRepository.get()
-        userRepository.addMockData()
 
         context = parent.context
 

@@ -15,26 +15,28 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/arrow"
+        android:background="@color/white"
+        android:onClick="onClickBackFromMaps"/>
+
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <Button
-                android:id="@+id/btnLocation"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:text="log location"
-                android:onClick="onClickGetLocation"
-                android:layout_above="@+id/btnOpenLocation"/>
-            <Button
                 android:id="@+id/btnOpenLocation"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:text="open location"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:text="Click restaurant to open"
                 android:onClick="onClickOpenLocation"
                 android:enabled="false"/>
         </LinearLayout>

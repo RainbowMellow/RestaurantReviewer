@@ -7,14 +7,13 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.restaurantreviewer.Database.ReviewRepository
-import com.example.restaurantreviewer.Database.UserRepository
+import com.example.restaurantreviewer.Database.InMemory.ReviewRepository
+import com.example.restaurantreviewer.Database.InMemory.UserRepository
 import com.example.restaurantreviewer.Model.RecycleAdapter
 import com.example.restaurantreviewer.Model.Restaurant
 import com.example.restaurantreviewer.Model.Review
@@ -178,8 +177,20 @@ class RestaurantActivity: AppCompatActivity() {
         }
     }
 
-    fun onClickBack(view: View) { finish() }
-    fun onClickLocation(view: View) {}
+    fun onClickBack(view: View) {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun onClickLocation(view: View) {
+        // Log.e("xyz", "Chosen restaurant: " + chosenRestaurant.name)
+        val intent = Intent(this, MapsActivity::class.java)
+        val list: ArrayList<Restaurant> = ArrayList();
+        list.add(chosenRestaurant);
+        intent.putExtra(getString(R.string.ALL_RESTAURANTS_INTENT), list)
+        intent.putExtra("FROM_ACTIVITY", "RESTAURANT");
+        startActivityForResult(intent, getString(R.string.MAP_SINGLE_CODE).toInt())
+    }
 
     fun onClickAddReview(view: View) {
         val intent = Intent(this, EditCreateActivity::class.java)
