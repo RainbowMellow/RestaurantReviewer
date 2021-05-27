@@ -9,8 +9,6 @@ class RestaurantApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         RestaurantRepository.initialize(this)
-        // val dbSeeder = DatabaseSeeder()
-        // dbSeeder.seed()
         println("---Application has started up!!!")
     }
 

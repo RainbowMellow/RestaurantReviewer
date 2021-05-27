@@ -25,7 +25,7 @@ class ReviewRepository private constructor(context: Context){
         return reviewList
     }
 
-    fun getForOneRestaurant(id: Int): ArrayList<Review> {
+    fun getForOneRestaurant(id: Int?): ArrayList<Review> {
         return reviewList.filter { r -> r.restaurantId == id } as ArrayList<Review>
     }
 

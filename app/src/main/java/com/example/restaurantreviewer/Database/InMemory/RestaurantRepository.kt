@@ -26,7 +26,7 @@ class RestaurantRepository private constructor(context: Context){
         }
     }
 
-    fun getRestaurantById(id: Int): Restaurant {
+    fun getRestaurantById(id: Int?): Restaurant {
         return restaurantList.first { restaurant -> restaurant.id == id }
     }
 

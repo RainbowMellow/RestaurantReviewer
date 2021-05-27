@@ -28,7 +28,6 @@ class RecycleAdapter(private val reviews: ArrayList<Review>) : RecyclerView.Adap
 
         UserRepository.initialize(parent.context)
         userRepository = UserRepository.get()
-        userRepository.addMockData()
 
         context = parent.context
 

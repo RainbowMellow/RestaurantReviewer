@@ -8,15 +8,11 @@ import java.time.LocalDate
 
 @Entity
 data class Review (
-    @PrimaryKey (autoGenerate = true) var id: Int,
-    var userId: Int,
-    var restaurantId: Int,
+    @PrimaryKey (autoGenerate = true) var id: Int?,
+    var userId: Int?,
+    var restaurantId: Int?,
     var review: String = "",
     var rating: Int,
     var picture: String? = null,
-    var date: LocalDate? = null,
-    @Ignore var user: User? = null,
-    @Ignore var restaurant: Restaurant? = null
-    ): Serializable {
-        constructor(): this(0, 0, 0, "", 0, null, null, null, null)
-    }
+    var date: LocalDate? = null
+    ): Serializable

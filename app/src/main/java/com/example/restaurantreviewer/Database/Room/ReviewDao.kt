@@ -8,10 +8,13 @@ import com.example.restaurantreviewer.Model.Review
 interface ReviewDao {
 
     @Query("SELECT * FROM Review WHERE id=(:id)")
-    fun getReviewById(id: Int): LiveData<Review>
+    fun getReviewById(id: Int?): LiveData<Review>
 
     @Query("SELECT * FROM Review WHERE restaurantId=(:id)")
-    fun getAllRestaurantReviews(id: Int): LiveData<List<Review>>
+    fun getAllRestaurantReviews(id: Int?): LiveData<List<Review>>
+
+    @Query("SELECT AVG(rating) FROM Review WHERE restaurantId=(:restaurantId)")
+    fun getRestaurantAverageRating(restaurantId: Int?): LiveData<Double>
 
     @Insert
     fun insertReview(review: Review)

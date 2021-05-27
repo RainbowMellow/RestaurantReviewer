@@ -10,7 +10,7 @@ import com.example.restaurantreviewer.Model.User
 interface UserDao {
 
     @Query("SELECT * FROM User WHERE id=(:id)")
-    fun getUserById(id: Int): LiveData<User>
+    fun getUserById(id: Int?): LiveData<User>
 
     @Insert
     fun insertUser(user: User)

@@ -24,22 +24,40 @@ class RestaurantRepository private constructor (context: Context){
     fun getAllRestaurants(): LiveData<List<Restaurant>>
     = restaurantDao.getAllRestaurants()
 
-    fun getRestaurantById(id: Int): LiveData<Restaurant>
+    fun getRestaurantById(id: Int?): LiveData<Restaurant>
     = restaurantDao.getRestaurantById(id)
 
     fun getNumberOfRestaurants(): LiveData<Int> = restaurantDao.getNumberOfRestaurants()
 
-    fun getFilteredRestaurants(filter: Filter): LiveData<List<Restaurant>>
-    = restaurantDao.getFilteredRestaurants(filter.orderBy, filter.asc, filter.avg)
+    fun getFilteredRestaurants(filter: Filter): LiveData<List<Restaurant>>? {
+            when (filter.orderBy) {
+                "id" -> if (filter.avg != null)
+                    return restaurantDao.getFilteredRestaurantsById(filter.asc, filter.avg!!) else
+                        return restaurantDao.getFilteredRestaurantsByIdIncludeNonRated(filter.asc)
+                "name" -> if (filter.avg != null)
+                    return restaurantDao.getFilteredRestaurantsByName(filter.asc, filter.avg!!) else
+                        return restaurantDao.getFilteredRestaurantsByNameIncludeNonRated(filter.asc)
+                "avgRating" -> if (filter.avg != null)
+                    return restaurantDao.getFilteredRestaurantsByRating(filter.asc, filter.avg!!) else
+                        return restaurantDao.getFilteredRestaurantsByRatingIncludeNonRated(filter.asc)
+                else -> return null
+            }
+    }
 
     fun insertRestaurant(restaurant: Restaurant)
     = executor.execute { restaurantDao.insertRestaurant(restaurant) }
 
-    fun getReviewById(id: Int): LiveData<Review>
+    fun updateRestaurant(restaurant: Restaurant)
+    = executor.execute { restaurantDao.updateRestaurant(restaurant) }
+
+    fun getReviewById(id: Int?): LiveData<Review>
     = reviewDao.getReviewById(id)
 
-    fun getAllRestaurantReviews(id: Int): LiveData<List<Review>>
+    fun getAllRestaurantReviews(id: Int?): LiveData<List<Review>>
     = reviewDao.getAllRestaurantReviews(id)
+
+    fun getRestaurantAverageReview(restaurant: Restaurant): LiveData<Double>
+    = reviewDao.getRestaurantAverageRating(restaurant.id)
 
     fun insertReview(review: Review) = executor.execute { reviewDao.insertReview(review) }
 
@@ -47,7 +65,7 @@ class RestaurantRepository private constructor (context: Context){
 
     fun deleteReview(review: Review) = executor.execute { reviewDao.deleteReview(review) }
 
-    fun getUserById(id: Int): LiveData<User> = userDao.getUserById(id)
+    fun getUserById(id: Int?): LiveData<User> = userDao.getUserById(id)
 
     fun insertUser(user: User) = executor.execute { userDao.insertUser(user) }
 
