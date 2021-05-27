@@ -31,4 +31,9 @@
     <string name="title_activity_maps">Map</string>
     <string name="restaurantInfo">Restaurant: %s</string>
     <string name="reviewerInfo">Reviewer: %s</string>
+    <string name="REVIEW_NO_CHANGES">No changes saved</string>
+    <string name="REVIEW_CREATED">Review created</string>
+    <string name="REVIEW_UPDATED">Review updated</string>
+    <string name="REVIEW_FAILURE">Operation failed</string>
+    <string name="UNKNOWN_RESULT_CODE_RETURNED">Unexpected behaviour</string>
 </resources>

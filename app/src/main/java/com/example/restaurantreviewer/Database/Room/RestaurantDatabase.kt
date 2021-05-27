@@ -7,7 +7,7 @@ import com.example.restaurantreviewer.Model.Restaurant
 import com.example.restaurantreviewer.Model.Review
 import com.example.restaurantreviewer.Model.User
 
-@Database(entities = [Restaurant::class, Review::class, User::class], version=16)
+@Database(entities = [Restaurant::class, Review::class, User::class], version=17)
 @TypeConverters(RestaurantConverters::class)
 abstract class RestaurantDatabase : RoomDatabase() {
     abstract fun restaurantDao(): RestaurantDao

@@ -9,7 +9,8 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.restaurantreviewer.Database.InMemory.UserRepository
+import com.example.restaurantreviewer.Database.Room.RestaurantRepository
+import com.example.restaurantreviewer.Database.Room.observeOnce
 import com.example.restaurantreviewer.R
 import java.time.format.DateTimeFormatter
 
@@ -19,7 +20,7 @@ class RecycleAdapter(private val reviews: ArrayList<Review>) : RecyclerView.Adap
 
     lateinit var context: Context
 
-    lateinit var userRepository: UserRepository
+    lateinit var restRepo: RestaurantRepository
 
     var itemClickListener: ((position: Int, review: Review) -> Unit)? = null
 
@@ -27,8 +28,7 @@ class RecycleAdapter(private val reviews: ArrayList<Review>) : RecyclerView.Adap
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.review_cell, parent, false)
 
-        UserRepository.initialize(parent.context)
-        userRepository = UserRepository.get()
+        restRepo = RestaurantRepository.get()
 
         context = parent.context
 
@@ -39,11 +39,7 @@ class RecycleAdapter(private val reviews: ArrayList<Review>) : RecyclerView.Adap
 
         val element = reviewList[position]
 
-        val user = userRepository.getUserById(element.userId)
-
-        holder.nameTxt.text = user.name
-
-        println(user?.name)
+        holder.nameTxt.text = element.user?.name
 
         val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
         holder.dateTxt.text = element.date!!.format(formatter)
