@@ -1,4 +1,4 @@
-package com.example.restaurantreviewer.GUI
+package com.example.restaurantreviewer.GUI.RecycleAdapters
 
 import android.content.Context
 import android.graphics.Color
@@ -10,11 +10,10 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.restaurantreviewer.Model.Restaurant
-import com.example.restaurantreviewer.Model.Review
 import com.example.restaurantreviewer.R
 import kotlin.math.roundToInt
 
-class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.RestaurantHolder> {
+class RestaurantRecyclerAdapter : RecyclerView.Adapter<RestaurantRecyclerAdapter.RestaurantHolder> {
 
     private val restaurants: ArrayList<Restaurant>
     private val inflater: LayoutInflater

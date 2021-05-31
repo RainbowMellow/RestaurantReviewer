@@ -20,14 +20,14 @@
                 android:id="@+id/tvName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Name"
+                android:text="@string/review_cell_name"
                 android:textSize="15sp"/>
 
             <TextView
                 android:id="@+id/tvDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Date"
+                android:text="@string/review_cell_date"
                 android:textSize="15sp"/>
 
         </LinearLayout>
