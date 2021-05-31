@@ -12,12 +12,12 @@ class DatabaseSeeder {
         println("---starting to seed")
         val repo = RestaurantRepository.get()
         val restaurantList = arrayListOf<Restaurant>(
-            Restaurant(id = null, name = "Sunset", address = "Torvet", latitude = 1.0, longitude = 2.0, openingHours = "Monday"),
-            Restaurant(id = null, name = "McDonalds", address = "Torvet", latitude = 3.0, longitude = 4.0, openingHours = "All the time"),
-            Restaurant(id = null, name = "den Niende", address = "Torvet", latitude = 4.0, longitude = 2.0, openingHours = "Never"),
-            Restaurant(id = null, name = "Nara Sushi", address = "Byen", latitude = 5.0, longitude = 1.5, openingHours = "Wednesday"),
-            Restaurant(id = null, name = "Jensens Bøfhus", address = "Ved Bilka", latitude = 18.0, longitude = 2.7, openingHours = "Tuesday"),
-            Restaurant(id = null, name = "Burger King", address = "Broen", latitude = 6.0, longitude = 6.0, openingHours = "Every day 07-23")
+            Restaurant(id = null, name = "Sunset", address = "Torvet", latitude = 55.466032505214926, longitude = 8.452232584193803, openingHours = "Monday"),
+            Restaurant(id = null, name = "McDonalds", address = "Torvet", latitude = 55.468098157014694, longitude = 8.45254039167325, openingHours = "All the time"),
+            Restaurant(id = null, name = "den Niende", address = "Torvet", latitude = 55.46636373996595, longitude = 8.452380026522546, openingHours = "Never"),
+            Restaurant(id = null, name = "Nara Sushi", address = "Byen", latitude = 55.46585147013918, longitude = 8.451391595837377, openingHours = "Wednesday"),
+            Restaurant(id = null, name = "Jensens Bøfhus", address = "Ved Bilka", latitude = 55.50933840505413, longitude = 8.455268984195957, openingHours = "Tuesday"),
+            Restaurant(id = null, name = "Burger King", address = "Broen", latitude = 55.46840415124429, longitude = 8.459849939246734, openingHours = "Every day 07-23")
         )
         val userList = arrayListOf<User>(
             User(id = null, name = "Benny"),
